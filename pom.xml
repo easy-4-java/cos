@@ -4,7 +4,7 @@
 	<artifactId>cos</artifactId>
 	<packaging>jar</packaging>
 	<name>Cos</name>
-	<version>2017.5-SNAPSHOT</version>
+	<version>2017.5</version>
 	<url>https://git.oschina.net/jfinal/cos</url>
 	<description>Cos</description>
 	
