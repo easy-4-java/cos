@@ -57,4 +57,21 @@ class FileMap {
     public Set<String> getFileNameSet() {
     	return map.keySet();
     }
+	
+	/**
+	 * 用于在发生异常后删除所有已上传文件
+	 */
+	public void deleteAllFiles() {
+		for (UploadedFile uf : map.values()) {
+			try {
+				java.io.File file = uf.getFile();
+				if (file != null) {
+					file.delete();
+				}
+			}
+			catch (Exception e) {
+				// ignore
+			}
+		}
+	}
 }
