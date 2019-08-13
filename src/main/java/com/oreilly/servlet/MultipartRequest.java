@@ -174,6 +174,20 @@ public class MultipartRequest {
                           String encoding) throws IOException {
     this(request, saveDirectory, maxPostSize, encoding, null);
   }
+  
+  public MultipartRequest(HttpServletRequest request, String saveDirectory, int maxPostSize, String encoding, FileRenamePolicy policy) throws IOException {
+	  try {
+		  parse(request, saveDirectory, maxPostSize, encoding, policy);
+	  }
+	  catch (IOException e) {
+		  files.deleteAllFiles();
+		  throw e;
+	  }
+	  catch (Exception e) {
+		  files.deleteAllFiles();
+		  throw new RuntimeException(e);
+	  }
+  }
 
   /**
    * Constructs a new MultipartRequest to handle the specified request, 
@@ -194,7 +208,7 @@ public class MultipartRequest {
    * @exception IOException if the uploaded content is larger than 
    * <tt>maxPostSize</tt> or there's a problem reading or parsing the request.
    */
-  public MultipartRequest(HttpServletRequest request,
+  public void parse(HttpServletRequest request,
                           String saveDirectory,
                           int maxPostSize,
                           String encoding,
