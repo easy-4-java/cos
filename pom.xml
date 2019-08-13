@@ -93,8 +93,6 @@
 					<!-- 解决 java8  发布到 maven 异常 -->
 					<additionalparam>-Xdoclint:none</additionalparam>
 					<encoding>UTF-8</encoding>
-					<outputDirectory>${basedir}</outputDirectory>
-					<reportOutputDirectory>${basedir}</reportOutputDirectory>
 				</configuration>
 				<executions>
 					<execution>
