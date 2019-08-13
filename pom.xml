@@ -96,6 +96,14 @@
 					<outputDirectory>${basedir}</outputDirectory>
 					<reportOutputDirectory>${basedir}</reportOutputDirectory>
 				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- 安装源码到本地仓库 -->
