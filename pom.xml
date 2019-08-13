@@ -4,8 +4,8 @@
 	<artifactId>cos</artifactId>
 	<packaging>jar</packaging>
 	<name>Cos</name>
-	<version>2017.6-SNAPSHOT</version>
-	<url>https://git.oschina.net/jfinal/cos</url>
+	<version>2019.8-SNAPSHOT</version>
+	<url>https://gitee.com/jfinal/cos</url>
 	<description>Cos</description>
 	
 	<properties>
@@ -14,7 +14,7 @@
 	
 	<issueManagement>
 		<system>Github Issue</system>
-		<url>http://git.oschina.net/jfinal/cos/issues</url>
+		<url>https://gitee.com/jfinal/cos/issues</url>
 	</issueManagement>
 	<licenses>
 		<license>
@@ -31,16 +31,21 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:git@git.oschina.net:jfinal/cos.git</connection>
-		<developerConnection>scm:git:git@git.oschina.net:jfinal/cos.git</developerConnection>
-		<url>git@git.oschina.net:jfinal/cos.git</url>
+		<connection>scm:git:git@gitee.com:jfinal/cos.git</connection>
+		<developerConnection>scm:git:git@gitee.com:jfinal/cos.git</developerConnection>
+		<url>git@gitee.com:jfinal/cos.git</url>
 	</scm>
 	
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<repositories>
 	</repositories>
@@ -98,19 +103,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.1</version>
+				<version>1.6</version>
 				<executions>
-				  <execution>
-					<id>sign-artifacts</id>
-					<phase>verify</phase>
-					<goals>
-					  <goal>sign</goal>
-					</goals>
-				  </execution>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
 				</executions>
-				<configuration>
-					<skip>false</skip>
-				</configuration>
 			</plugin>
 
 		</plugins>
