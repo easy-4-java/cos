@@ -14,7 +14,6 @@ import java.io.IOException;
  * @author <b>Jason Hunter</b>, Copyright &#169; 2007
  * @version 1.0, 2007/04/11
  */
-@SuppressWarnings("serial")
 public class ExceededSizeException extends RuntimeException {
 
   /**
