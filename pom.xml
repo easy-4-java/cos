@@ -4,7 +4,7 @@
 	<artifactId>cos</artifactId>
 	<packaging>jar</packaging>
 	<name>Cos</name>
-	<version>2019.9</version>
+	<version>2020.4</version>
 	<url>https://gitee.com/jfinal/cos</url>
 	<description>Cos</description>
 	
