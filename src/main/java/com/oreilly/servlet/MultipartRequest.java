@@ -179,6 +179,10 @@ public class MultipartRequest {
 	  try {
 		  parse(request, saveDirectory, maxPostSize, encoding, policy);
 	  }
+	  catch (RuntimeException e) {
+		  files.deleteAllFiles();
+		  throw e;	// 防止对 ExceededSizeException 进行包装
+	  }
 	  catch (IOException e) {
 		  files.deleteAllFiles();
 		  throw e;
