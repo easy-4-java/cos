@@ -32,4 +32,12 @@ public class ExceededSizeException extends RuntimeException {
   public ExceededSizeException(String s) {
     super(s);
   }
+  
+  /**
+   * 便于 jfinal 中的同名类 com.jfinal.upload.ExceededSizeException 继承
+   * 让用户代码中的 try catch 同时支持两种 ExceededSizeException 类型
+   */
+  public ExceededSizeException(Throwable t) {
+	  super(t);
+  }
 }
