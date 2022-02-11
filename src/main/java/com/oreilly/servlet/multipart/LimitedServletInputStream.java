@@ -6,6 +6,7 @@ package com.oreilly.servlet.multipart;
 
 import java.io.IOException;
 
+import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 
 /**
@@ -25,16 +26,16 @@ public class LimitedServletInputStream extends ServletInputStream {
   private ServletInputStream in;
   
   /** number of bytes to read before giving up */
-  private int totalExpected;
+  private long totalExpected;
   
   /** number of bytes we have currently read */
-  private int totalRead = 0;
+  private long totalRead = 0;
   
   /**
    * Creates a <code>LimitedServletInputStream</code> with the specified
    * length limit that wraps the provided <code>ServletInputStream</code>.
    */
-  public LimitedServletInputStream(ServletInputStream in, int totalExpected) {
+  public LimitedServletInputStream(ServletInputStream in, long totalExpected) {
     this.in = in;
     this.totalExpected = totalExpected;
   }
@@ -53,11 +54,12 @@ public class LimitedServletInputStream extends ServletInputStream {
    * @exception  IOException  if an I/O error occurs.
    */
   public int readLine(byte b[], int off, int len) throws IOException {
-    int result, left = totalExpected - totalRead;
-    if (left <= 0) {
+    int result;
+    long left = totalExpected - totalRead;
+    if (left <= 0L) {
       return -1;
     } else {
-      result = ((ServletInputStream)in).readLine(b, off, Math.min(left, len));
+      result = in.readLine(b, off, (int)Math.min(left,len));
     }
     if (result > 0) {
       totalRead += result;
@@ -97,15 +99,31 @@ public class LimitedServletInputStream extends ServletInputStream {
    * @exception  IOException  if an I/O error occurs.
    */
   public int read( byte b[], int off, int len ) throws IOException {
-    int result, left = totalExpected - totalRead;
+    int result;
+    long left = totalExpected - totalRead;
     if (left <= 0) {
       return -1;
     } else {
-      result = in.read(b, off, Math.min(left, len));
+      result = in.read(b, off, (int)Math.min(left, len));
     }
     if (result > 0) {
       totalRead += result;
     }
     return result;    
+  }
+
+  @Override
+  public boolean isFinished() {
+    return in.isFinished();
+  }
+
+  @Override
+  public boolean isReady() {
+    return in.isReady();
+  }
+
+  @Override
+  public void setReadListener(ReadListener readListener) {
+    in.setReadListener(readListener);
   }
 }

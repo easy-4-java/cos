@@ -4,7 +4,7 @@
 	<artifactId>cos</artifactId>
 	<packaging>jar</packaging>
 	<name>Cos</name>
-	<version>2020.4</version>
+	<version>2022.2</version>
 	<url>https://gitee.com/jfinal/cos</url>
 	<description>Cos</description>
 	
@@ -59,8 +59,8 @@
 		
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
