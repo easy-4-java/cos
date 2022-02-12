@@ -6,6 +6,7 @@ package com.oreilly.servlet.multipart;
 
 import java.io.IOException;
 
+import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 
 /**
@@ -194,5 +195,20 @@ public class BufferedServletInputStream extends ServletInputStream {
       total += copy;
     }
     return total;
+  }
+
+  @Override
+  public boolean isFinished() {
+    return in.isFinished();
+  }
+
+  @Override
+  public boolean isReady() {
+    return in.isReady();
+  }
+
+  @Override
+  public void setReadListener(ReadListener readListener) {
+    in.setReadListener(readListener);
   }
 }

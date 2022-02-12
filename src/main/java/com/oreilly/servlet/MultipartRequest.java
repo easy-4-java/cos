@@ -67,7 +67,7 @@ import com.oreilly.servlet.multipart.FileRenamePolicy;
  */
 public class MultipartRequest {
 
-  private static final int DEFAULT_MAX_POST_SIZE = 1024 * 1024;  // 1 Meg
+  private static final long DEFAULT_MAX_POST_SIZE = 1024 * 1024;  // 1 Meg
 
   protected Hashtable parameters = new Hashtable();  // name - Vector of values
   // protected Hashtable files = new Hashtable();       // name - UploadedFile
@@ -107,7 +107,7 @@ public class MultipartRequest {
    */
   public MultipartRequest(HttpServletRequest request,
                           String saveDirectory,
-                          int maxPostSize) throws IOException {
+                          long maxPostSize) throws IOException {
     this(request, saveDirectory, maxPostSize, null, null);
   }
 
@@ -148,7 +148,7 @@ public class MultipartRequest {
    */
   public MultipartRequest(HttpServletRequest request,
                           String saveDirectory,
-                          int maxPostSize,
+                          long maxPostSize,
                           FileRenamePolicy policy) throws IOException {
     this(request, saveDirectory, maxPostSize, null, policy);
   }
@@ -170,12 +170,12 @@ public class MultipartRequest {
    */
   public MultipartRequest(HttpServletRequest request,
                           String saveDirectory,
-                          int maxPostSize,
+                          long maxPostSize,
                           String encoding) throws IOException {
     this(request, saveDirectory, maxPostSize, encoding, null);
   }
   
-  public MultipartRequest(HttpServletRequest request, String saveDirectory, int maxPostSize, String encoding, FileRenamePolicy policy) throws IOException {
+  public MultipartRequest(HttpServletRequest request, String saveDirectory, long maxPostSize, String encoding, FileRenamePolicy policy) throws IOException {
 	  try {
 		  parse(request, saveDirectory, maxPostSize, encoding, policy);
 	  }
@@ -214,7 +214,7 @@ public class MultipartRequest {
    */
   public void parse(HttpServletRequest request,
                           String saveDirectory,
-                          int maxPostSize,
+                          long maxPostSize,
                           String encoding,
                           FileRenamePolicy policy) throws IOException {
     // Sanity check values
@@ -324,7 +324,7 @@ public class MultipartRequest {
    */
   public MultipartRequest(ServletRequest request,
                           String saveDirectory,
-                          int maxPostSize) throws IOException {
+                          long maxPostSize) throws IOException {
     this((HttpServletRequest)request, saveDirectory, maxPostSize);
   }
 

@@ -9,7 +9,7 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-/** 
+/**
  * A superclass for HTTP servlets that wish to have their output 
  * cached and automatically resent as appropriate according to the
  * servlet's getLastModified() method.  To take advantage of this class, 
@@ -78,7 +78,7 @@ public abstract class CacheHttpServlet extends HttpServlet {
     // If the client sent an If-Modified-Since header equal or after the 
     // servlet's last modified time, send a short "Not Modified" status code
     // Round down to the nearest second since client headers are in seconds
-    if ((servletLastMod / 1000 * 1000) <= 
+    if ((servletLastMod / 1000 * 1000) <=
              req.getDateHeader("If-Modified-Since")) {
       res.setStatus(res.SC_NOT_MODIFIED);
       return;
@@ -87,7 +87,7 @@ public abstract class CacheHttpServlet extends HttpServlet {
     // Use the existing cache if it's current and valid
     CacheHttpServletResponse localResponseCopy = null;
     synchronized (lock) {
-      if (servletLastMod <= cacheLastMod && 
+      if (servletLastMod <= cacheLastMod &&
                cacheResponse.isValid() &&
                equal(cacheQueryString, req.getQueryString()) &&
                equal(cachePathInfo, req.getPathInfo()) &&
@@ -262,6 +262,11 @@ class CacheHttpServletResponse implements HttpServletResponse {
     // No need to save the length; we can calculate it later
   }
 
+  @Override
+  public void setContentLengthLong(long len) {
+    delegate.setContentLengthLong(len);
+  }
+
   public void setContentType(String type) {
     delegate.setContentType(type);
     contentType = type;
@@ -295,105 +300,125 @@ class CacheHttpServletResponse implements HttpServletResponse {
     out.getBuffer().reset();
   }
 
-  public boolean isCommitted() { 
+  public boolean isCommitted() {
     return delegate.isCommitted();
   }
 
-  public void flushBuffer() throws IOException { 
+  public void flushBuffer() throws IOException {
     delegate.flushBuffer();
   }
 
-  public void setLocale(Locale loc) { 
+  public void setLocale(Locale loc) {
     delegate.setLocale(loc);
     locale = loc;
   }
 
-  public Locale getLocale() { 
+  public Locale getLocale() {
     return delegate.getLocale();
   }
 
-  public void addCookie(Cookie cookie) { 
+  public void addCookie(Cookie cookie) {
     delegate.addCookie(cookie);
     cookies.addElement(cookie);
   }
 
-  public boolean containsHeader(String name) { 
+  public boolean containsHeader(String name) {
     return delegate.containsHeader(name);
   }
 
-  public String getContentType() { 
+  public String getContentType() {
     return delegate.getContentType();
   }
 
   /** @deprecated */
-  public void setStatus(int sc, String sm) { 
+  public void setStatus(int sc, String sm) {
     delegate.setStatus(sc, sm);
     status = sc;
   }
 
-  public void setStatus(int sc) { 
+  public void setStatus(int sc) {
     delegate.setStatus(sc);
     status = sc;
   }
 
-  public void setHeader(String name, String value) { 
+  public void setHeader(String name, String value) {
     delegate.setHeader(name, value);
     internalSetHeader(name, value);
   }
 
-  public void setIntHeader(String name, int value) { 
+  public void setIntHeader(String name, int value) {
     delegate.setIntHeader(name, value);
     internalSetHeader(name, new Integer(value));
   }
 
-  public void setDateHeader(String name, long date) { 
+  public void setDateHeader(String name, long date) {
     delegate.setDateHeader(name, date);
     internalSetHeader(name, new Long(date));
   }
 
-  public void sendError(int sc, String msg) throws IOException { 
+  public void sendError(int sc, String msg) throws IOException {
     delegate.sendError(sc, msg);
     didError = true;
   }
 
-  public void sendError(int sc) throws IOException { 
+  public void sendError(int sc) throws IOException {
     delegate.sendError(sc);
     didError = true;
   }
 
-  public void sendRedirect(String location) throws IOException { 
+  public void sendRedirect(String location) throws IOException {
     delegate.sendRedirect(location);
     didRedirect = true;
   }
 
-  public String encodeURL(String url) { 
+  public String encodeURL(String url) {
     return delegate.encodeURL(url);
   }
 
-  public String encodeRedirectURL(String url) { 
+  public String encodeRedirectURL(String url) {
     return delegate.encodeRedirectURL(url);
   }
 
-  public void addHeader(String name, String value) { 
+  public void addHeader(String name, String value) {
     internalAddHeader(name, value);
   }
 
-  public void addIntHeader(String name, int value) { 
+  public void addIntHeader(String name, int value) {
     internalAddHeader(name, new Integer(value));
   }
 
-  public void addDateHeader(String name, long value) { 
+  public void addDateHeader(String name, long value) {
     internalAddHeader(name, new Long(value));
   }
 
   /** @deprecated */
-  public String encodeUrl(String url) { 
+  public String encodeUrl(String url) {
     return this.encodeURL(url);
   }
 
   /** @deprecated */
-  public String encodeRedirectUrl(String url) { 
+  public String encodeRedirectUrl(String url) {
     return this.encodeRedirectURL(url);
+  }
+
+  @Override
+  public int getStatus() {
+    return delegate.getStatus();
+  }
+
+  @Override
+  public String getHeader(String name) {
+    return delegate.getHeader(name);
+  }
+
+  @Override
+  public Collection<String> getHeaders(String name) {
+    return delegate.getHeaders(name);
+  }
+
+  @Override
+  public Collection<String> getHeaderNames() {
+    return delegate.getHeaderNames();
   }
 }
 
@@ -424,5 +449,15 @@ class CacheServletOutputStream extends ServletOutputStream {
   public void write(byte buf[], int offset, int len) throws IOException {
     delegate.write(buf, offset, len);
     cache.write(buf, offset, len);
+  }
+
+  @Override
+  public boolean isReady() {
+    return delegate.isReady();
+  }
+
+  @Override
+  public void setWriteListener(WriteListener writeListener) {
+    delegate.setWriteListener(writeListener);
   }
 }

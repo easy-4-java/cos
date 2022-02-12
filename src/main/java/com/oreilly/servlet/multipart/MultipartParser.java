@@ -98,7 +98,7 @@ public class MultipartParser {
    * @param maxSize the maximum size of the POST content.
    */
   public MultipartParser(HttpServletRequest req, 
-                         int maxSize) throws IOException {
+                         long maxSize) throws IOException {
     this(req, maxSize, true, true);
   }
   
@@ -116,7 +116,7 @@ public class MultipartParser {
    *                    the request's input stream to prevent trying to 
    *                    read past the end of the stream.
    */
-  public MultipartParser(HttpServletRequest req, int maxSize, boolean buffer, 
+  public MultipartParser(HttpServletRequest req, long maxSize, boolean buffer,
                          boolean limitLength) throws IOException {
     this(req, maxSize, buffer, limitLength, null);
   }
@@ -136,7 +136,7 @@ public class MultipartParser {
    *                    read past the end of the stream.
    * @param encoding the encoding to use for parsing, default is ISO-8859-1.
    */
-  public MultipartParser(HttpServletRequest req, int maxSize, boolean buffer, 
+  public MultipartParser(HttpServletRequest req, long maxSize, boolean buffer,
                          boolean limitLength, String encoding)
                                                 throws IOException {
     // First make sure we know the encoding to handle chars correctly.
@@ -169,7 +169,7 @@ public class MultipartParser {
     }
 
     // Check the content length to prevent denial of service attacks
-    int length = req.getContentLength();
+    long length = req.getContentLengthLong();
     if (length > maxSize) {
       // throw new IOException("Posted content length of " + length + " exceeds limit of " + maxSize);
     	throw new ExceededSizeException("Posted content length of " + length + " exceeds limit of " + maxSize);
