@@ -4,18 +4,19 @@
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import java.util.*;
-import javax.servlet.*;
+import jakarta.servlet.ServletRequest;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Vector;
 
 /** 
  * A class to simplify parameter handling.  It can return parameters of
  * any primitive type (no casting or parsing required), can throw an 
  * exception when a parameter is not found (simplifying error handling),
  * and can accept default values (eliminating error handling).
- * <p>
+ * &lt;p&gt;
  * It is used like this:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * ParameterParser parser = new ParameterParser(req);
  * &nbsp;
  * float ratio = parser.getFloatParameter("ratio", 1.0);
@@ -30,29 +31,29 @@ import javax.servlet.*;
  * catch (ParameterNotFoundException e) {
  *   handleNoCount();
  * }
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * There's also a capability to find out if any required parameters are
  * missing from a request:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * ParameterParser parser = new ParameterParser(req);
  * String[] required = { "fname", "lname", "account" };
  * String[] missing = parser.getMissingParameters(required);
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * The default charset for input parameters is ISO-8859-1 (Latin-1).  
  * If the parameter values are encoded in another format, specify that using
  * setCharacterEncoding() before parsing.  The parameter names currently
  * have to be in the Latin-1 character set:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * ParameterParser parser = new ParameterParser(req);
  * parser.setCharacterEncoding("Shift_JIS");
  * String japaneseValue = parser.getStringParameter("latinName");
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * @see com.oreilly.servlet.ParameterNotFoundException
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1998, 1999
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998, 1999
  * @version 1.4, 2000/12/14, better checking the selected encoding is valid in 
  *                           setCharacterEncoding() thanks to Dewayne McNair
  * @version 1.3, 2000/05/17, added setCharacterEncoding()

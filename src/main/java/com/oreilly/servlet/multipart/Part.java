@@ -5,8 +5,8 @@
 package com.oreilly.servlet.multipart;
 
 /**
- * A <code>Part</code> is an abstract upload part which represents an 
- * <code>INPUT</code> form element in a <code>multipart/form-data</code> form 
+ * A <code>Part</code> is an abstract upload part which represents an
+ * <code>INPUT</code> form element in a <code>multipart/form-data</code> form
  * submission.
  * 
  * @see FilePart

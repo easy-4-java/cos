@@ -4,44 +4,50 @@
 
 package com.oreilly.servlet;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 
 /**
- * A superclass for HTTP servlets that wish to have their output 
+ * A superclass for HTTP servlets that wish to have their output
  * cached and automatically resent as appropriate according to the
- * servlet's getLastModified() method.  To take advantage of this class, 
+ * servlet's getLastModified() method.  To take advantage of this class,
  * a servlet must:
- * <ul>
- * <li>Extend <tt>CacheHttpServlet</tt> instead of <tt>HttpServlet</tt>
- * <li>Implement a <tt>getLastModified(HttpServletRequest)</tt> method as usual
- * </ul>
- * This class uses the value returned by <tt>getLastModified()</tt> to manage 
+ * &lt;ul&gt;
+ * &lt;li&gt;Extend &lt;tt&gt;CacheHttpServlet&lt;/tt&gt; instead of &lt;tt&gt;HttpServlet&lt;/tt&gt;
+ * &lt;li&gt;Implement a &lt;tt&gt;getLastModified(HttpServletRequest)&lt;/tt&gt; method as usual
+ * &lt;/ul&gt;
+ * This class uses the value returned by &lt;tt&gt;getLastModified()&lt;/tt&gt; to manage
  * an internal cache of the servlet's output.  Before handling a request,
- * this class checks the value of <tt>getLastModified()</tt>, and if the 
- * output cache is at least as current as the servlet's last modified time, 
- * the cached output is sent without calling the servlet's <tt>doGet()</tt> 
+ * this class checks the value of &lt;tt&gt;getLastModified()&lt;/tt&gt;, and if the
+ * output cache is at least as current as the servlet's last modified time,
+ * the cached output is sent without calling the servlet's &lt;tt&gt;doGet()&lt;/tt&gt;
  * method.
- * <p>
- * In order to be safe, if this class detects that the servlet's query 
+ * &lt;p&gt;
+ * In order to be safe, if this class detects that the servlet's query
  * string, extra path info, or servlet path has changed, the cache is
  * invalidated and recreated.  However, this class does not invalidate
- * the cache based on differing request headers or cookies; for 
- * servlets that vary their output based on these values (i.e. a session 
+ * the cache based on differing request headers or cookies; for
+ * servlets that vary their output based on these values (i.e. a session
  * tracking servlet) this class should probably not be used.
- * <p>
- * No caching is performed for POST requests.  
- * <p>
- * <tt>CacheHttpServletResponse</tt> and <tt>CacheServletOutputStream</tt>
+ * &lt;p&gt;
+ * No caching is performed for POST requests.
+ * &lt;p&gt;
+ * &lt;tt&gt;CacheHttpServletResponse&lt;/tt&gt; and &lt;tt&gt;CacheServletOutputStream&lt;/tt&gt;
  * are helper classes to this class and should not be used directly.
- * <p>
+ * &lt;p&gt;
  * This class has been built against Servlet API 2.2.  Using it with previous
  * Servlet API versions should work; using it with future API versions likely
  * won't work.
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1999
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1999
  * @version 0.93, 2004/06/25, added setCharacterEncoding() for servlets 2.4
  * @version 0.92, 2000/03/16, added synchronization blocks to make thread safe
  * @version 0.91, 1999/12/28, made support classes package protected
@@ -57,6 +63,7 @@ public abstract class CacheHttpServlet extends HttpServlet {
   String cacheServletPath = null;
   Object lock = new Object();
 
+  @Override
   protected void service(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
     // Only do caching for GET requests
@@ -75,12 +82,12 @@ public abstract class CacheHttpServlet extends HttpServlet {
       return;
     }
 
-    // If the client sent an If-Modified-Since header equal or after the 
+    // If the client sent an If-Modified-Since header equal or after the
     // servlet's last modified time, send a short "Not Modified" status code
     // Round down to the nearest second since client headers are in seconds
     if ((servletLastMod / 1000 * 1000) <=
              req.getDateHeader("If-Modified-Since")) {
-      res.setStatus(res.SC_NOT_MODIFIED);
+      res.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
       return;
     }
 
@@ -194,9 +201,15 @@ class CacheHttpServletResponse implements HttpServletResponse {
     // Write status code
     res.setStatus(status);
     // Write convenience headers
-    if (contentType != null) res.setContentType(contentType);
-    if (encoding != null) res.setCharacterEncoding(encoding);
-    if (locale != null) res.setLocale(locale);
+    if (contentType != null) {
+        res.setContentType(contentType);
+    }
+    if (encoding != null) {
+        res.setCharacterEncoding(encoding);
+    }
+    if (locale != null) {
+        res.setLocale(locale);
+    }
     // Write cookies
     Enumeration enu = cookies.elements();
     while (enu.hasMoreElements()) {
@@ -234,6 +247,7 @@ class CacheHttpServletResponse implements HttpServletResponse {
     }
   }
 
+  @Override
   public ServletOutputStream getOutputStream() throws IOException {
     if (gotWriter) {
       throw new IllegalStateException(
@@ -243,6 +257,7 @@ class CacheHttpServletResponse implements HttpServletResponse {
     return out;
   }
 
+  @Override
   public PrintWriter getWriter() throws UnsupportedEncodingException {
     if (gotStream) {
       throw new IllegalStateException(
@@ -257,6 +272,7 @@ class CacheHttpServletResponse implements HttpServletResponse {
     return writer;
   }
 
+  @Override
   public void setContentLength(int len) {
     delegate.setContentLength(len);
     // No need to save the length; we can calculate it later
@@ -267,126 +283,146 @@ class CacheHttpServletResponse implements HttpServletResponse {
     delegate.setContentLengthLong(len);
   }
 
+  @Override
   public void setContentType(String type) {
     delegate.setContentType(type);
     contentType = type;
   }
 
+  @Override
   public void setCharacterEncoding(String encoding) {
     delegate.setCharacterEncoding(encoding);
     encoding = encoding;
   }
 
+  @Override
   public String getCharacterEncoding() {
     return delegate.getCharacterEncoding();
   }
 
+  @Override
   public void setBufferSize(int size) throws IllegalStateException {
     delegate.setBufferSize(size);
   }
 
+  @Override
   public int getBufferSize() {
     return delegate.getBufferSize();
   }
 
+  @Override
   public void reset() throws IllegalStateException {
     delegate.reset();
     internalReset();
   }
 
+  @Override
   public void resetBuffer() throws IllegalStateException {
     delegate.resetBuffer();
     contentLength = -1;
     out.getBuffer().reset();
   }
 
+  @Override
   public boolean isCommitted() {
     return delegate.isCommitted();
   }
 
+  @Override
   public void flushBuffer() throws IOException {
     delegate.flushBuffer();
   }
 
+  @Override
   public void setLocale(Locale loc) {
     delegate.setLocale(loc);
     locale = loc;
   }
 
+  @Override
   public Locale getLocale() {
     return delegate.getLocale();
   }
 
+  @Override
   public void addCookie(Cookie cookie) {
     delegate.addCookie(cookie);
     cookies.addElement(cookie);
   }
 
+  @Override
   public boolean containsHeader(String name) {
     return delegate.containsHeader(name);
   }
 
+  @Override
   public String getContentType() {
     return delegate.getContentType();
   }
 
-  /** @deprecated */
-  public void setStatus(int sc, String sm) {
-    delegate.setStatus(sc, sm);
-    status = sc;
-  }
-
+  @Override
   public void setStatus(int sc) {
     delegate.setStatus(sc);
     status = sc;
   }
 
+  @Override
   public void setHeader(String name, String value) {
     delegate.setHeader(name, value);
     internalSetHeader(name, value);
   }
 
+  @Override
   public void setIntHeader(String name, int value) {
     delegate.setIntHeader(name, value);
     internalSetHeader(name, new Integer(value));
   }
 
+  @Override
   public void setDateHeader(String name, long date) {
     delegate.setDateHeader(name, date);
     internalSetHeader(name, new Long(date));
   }
 
+  @Override
   public void sendError(int sc, String msg) throws IOException {
     delegate.sendError(sc, msg);
     didError = true;
   }
 
+  @Override
   public void sendError(int sc) throws IOException {
     delegate.sendError(sc);
     didError = true;
   }
 
+  @Override
   public void sendRedirect(String location) throws IOException {
     delegate.sendRedirect(location);
     didRedirect = true;
   }
 
+  @Override
   public String encodeURL(String url) {
     return delegate.encodeURL(url);
   }
 
+  @Override
   public String encodeRedirectURL(String url) {
     return delegate.encodeRedirectURL(url);
   }
 
+  @Override
   public void addHeader(String name, String value) {
     internalAddHeader(name, value);
   }
 
+  @Override
   public void addIntHeader(String name, int value) {
     internalAddHeader(name, new Integer(value));
   }
 
+  @Override
   public void addDateHeader(String name, long value) {
     internalAddHeader(name, new Long(value));
   }
@@ -436,16 +472,19 @@ class CacheServletOutputStream extends ServletOutputStream {
     return cache;
   }
 
+  @Override
   public void write(int b) throws IOException {
     delegate.write(b);
     cache.write(b);
   }
 
+  @Override
   public void write(byte b[]) throws IOException {
     delegate.write(b);
     cache.write(b);
   }
 
+  @Override
   public void write(byte buf[], int offset, int len) throws IOException {
     delegate.write(buf, offset, len);
     cache.write(buf, offset, len);

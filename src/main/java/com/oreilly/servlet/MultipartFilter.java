@@ -4,18 +4,20 @@
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A filter for easy semi-automatic handling of multipart/form-data requests 
  * (file uploads).  The filter capability requires Servlet API 2.3.
- * <p>
+ * &lt;p&gt;
  * See Jason Hunter's June 2001 article in JavaWorld for a full explanation of
  * the class usage.
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2001
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2001
  * @version 1.0, 2001/06/19
  */
 public class MultipartFilter implements Filter {
@@ -31,14 +33,14 @@ public class MultipartFilter implements Filter {
     dir = config.getInitParameter("uploadDir");
     if (dir == null) {
       File tempdir = (File) config.getServletContext()
-                  .getAttribute("javax.servlet.context.tempdir");
+                  .getAttribute("jakarta.servlet.context.tempdir");
       if (tempdir != null) {
         dir = tempdir.toString();
       }
       else {
         throw new ServletException(
           "MultipartFilter: No upload directory found: set an uploadDir " +
-          "init parameter or ensure the javax.servlet.context.tempdir " +
+          "init parameter or ensure the jakarta.servlet.context.tempdir " +
           "directory is valid");
       }
     }

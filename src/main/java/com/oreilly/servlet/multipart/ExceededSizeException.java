@@ -4,14 +4,12 @@
 
 package com.oreilly.servlet.multipart;
 
-import java.io.IOException;
-
-/** 
+/**
  * Thrown to indicate an upload exceeded the maximum size.
  *
  * @see com.oreilly.servlet.multipart.MultipartParser
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2007
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2007
  * @version 1.0, 2007/04/11
  */
 public class ExceededSizeException extends RuntimeException {

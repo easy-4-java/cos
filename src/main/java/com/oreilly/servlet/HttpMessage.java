@@ -5,15 +5,19 @@
 package com.oreilly.servlet;
 
 import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Properties;
 
 /** 
  * A class to simplify HTTP applet-server communication.  It abstracts
  * the communication into messages, which can be either GET or POST.
- * <p>
+ * &lt;p&gt;
  * It can be used like this:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * URL url = new URL(getCodeBase(), "/servlet/ServletName");
  * &nbsp;
  * HttpMessage msg = new HttpMessage(url);
@@ -28,12 +32,12 @@ import java.util.*;
  * msg.setAuthorization("guest", "try2gueSS");       // optional
  * &nbsp;
  * InputStream in = msg.sendGetMessage(props);
- * </pre></blockquote>
- * <p>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
+ * &lt;p&gt;
  * This class is loosely modeled after the ServletMessage class written 
  * by Rod McChesney of JavaSoft.
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1998
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
  * @version 1.3, 2000/10/24, fixed headers NPE bug
  * @version 1.2, 2000/10/15, changed uploaded object MIME type to
  *                           application/x-java-serialized-object
@@ -144,14 +148,14 @@ public class HttpMessage {
 
   /**
    * Performs a POST request to the servlet, uploading a serialized object.
-   * <p>
-   * The servlet can receive the object in its <tt>doPost()</tt> method 
+   * &lt;p&gt;
+   * The servlet can receive the object in its &lt;tt&gt;doPost()&lt;/tt&gt; method
    * like this:
-   * <pre>
+   * &lt;pre&gt;
    *     ObjectInputStream objin =
    *       new ObjectInputStream(req.getInputStream());
    *     Object obj = objin.readObject();
-   * </pre>
+   * &lt;/pre&gt;
    * The type of the uploaded object can be determined through introspection.
    *
    * @param obj the serializable object to upload

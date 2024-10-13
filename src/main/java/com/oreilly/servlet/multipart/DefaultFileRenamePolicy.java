@@ -4,7 +4,8 @@
 
 package com.oreilly.servlet.multipart;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Implements a renaming policy that adds increasing integers to the body of

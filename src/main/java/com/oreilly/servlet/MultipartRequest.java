@@ -4,39 +4,38 @@
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import com.oreilly.servlet.multipart.*;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
-import com.oreilly.servlet.multipart.MultipartParser;
-import com.oreilly.servlet.multipart.Part;
-import com.oreilly.servlet.multipart.FilePart;
-import com.oreilly.servlet.multipart.ParamPart;
-import com.oreilly.servlet.multipart.FileRenamePolicy;
+import java.io.File;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /** 
  * A utility class to handle <code>multipart/form-data</code> requests,
  * the kind of requests that support file uploads.  This class emulates the 
- * interface of <code>HttpServletRequest</code>, making it familiar to use. 
+ * interface of <code>HttpServletRequest</code>, making it familiar to use.
  * It uses a "push" model where any incoming files are read and saved directly
  * to disk in the constructor. If you wish to have more flexibility, e.g. 
  * write the files to a database, use the "pull" model 
  * <code>MultipartParser</code> instead.
- * <p>
+ * &lt;p&gt;
  * This class can receive arbitrarily large files (up to an artificial limit 
  * you can set), and fairly efficiently too.  
  * It cannot handle nested data (multipart content within multipart content).
- * It <b>can</b> now with the latest release handle internationalized content
+ * It &lt;b&gt;can&lt;/b&gt; now with the latest release handle internationalized content
  * (such as non Latin-1 filenames).
- * <p>
+ * &lt;p&gt;
  * To avoid collisions and have fine control over file placement, there's a
  * constructor variety that takes a pluggable FileRenamePolicy implementation.
  * A particular policy can choose to rename or change the location of the file
  * before it's written.
- * <p>
+ * &lt;p&gt;
  * See the included upload.war for an example of how to use this class.
- * <p>
+ * &lt;p&gt;
  * The full file upload specification is contained in experimental RFC 1867,
  * available at <a href="http://www.ietf.org/rfc/rfc1867.txt">
  * http://www.ietf.org/rfc/rfc1867.txt</a>.
@@ -78,7 +77,7 @@ public class MultipartRequest {
    * saving any uploaded files to the given directory, and limiting the 
    * upload size to 1 Megabyte.  If the content is too large, an
    * IOException is thrown.  This constructor actually parses the 
-   * <tt>multipart/form-data</tt> and throws an IOException if there's any 
+   * &lt;tt&gt;multipart/form-data&lt;/tt&gt; and throws an IOException if there's any
    * problem reading or parsing the request.
    *
    * @param request the servlet request.
@@ -96,14 +95,14 @@ public class MultipartRequest {
    * saving any uploaded files to the given directory, and limiting the 
    * upload size to the specified length.  If the content is too large, an 
    * IOException is thrown.  This constructor actually parses the 
-   * <tt>multipart/form-data</tt> and throws an IOException if there's any 
+   * &lt;tt&gt;multipart/form-data&lt;/tt&gt; and throws an IOException if there's any
    * problem reading or parsing the request.
    *
    * @param request the servlet request.
    * @param saveDirectory the directory in which to save any uploaded files.
    * @param maxPostSize the maximum size of the POST content.
    * @exception IOException if the uploaded content is larger than 
-   * <tt>maxPostSize</tt> or there's a problem reading or parsing the request.
+   * &lt;tt&gt;maxPostSize&lt;/tt&gt; or there's a problem reading or parsing the request.
    */
   public MultipartRequest(HttpServletRequest request,
                           String saveDirectory,
@@ -116,7 +115,7 @@ public class MultipartRequest {
    * saving any uploaded files to the given directory, and limiting the 
    * upload size to the specified length.  If the content is too large, an 
    * IOException is thrown.  This constructor actually parses the 
-   * <tt>multipart/form-data</tt> and throws an IOException if there's any 
+   * &lt;tt&gt;multipart/form-data&lt;/tt&gt; and throws an IOException if there's any
    * problem reading or parsing the request.
    *
    * @param request the servlet request.
@@ -136,7 +135,7 @@ public class MultipartRequest {
    * saving any uploaded files to the given directory, and limiting the 
    * upload size to the specified length.  If the content is too large, an 
    * IOException is thrown.  This constructor actually parses the 
-   * <tt>multipart/form-data</tt> and throws an IOException if there's any 
+   * &lt;tt&gt;multipart/form-data&lt;/tt&gt; and throws an IOException if there's any
    * problem reading or parsing the request.
    *
    * @param request the servlet request.
@@ -144,7 +143,7 @@ public class MultipartRequest {
    * @param maxPostSize the maximum size of the POST content.
    * @param policy the rules for renaming in case of file name collisions
    * @exception IOException if the uploaded content is larger than 
-   * <tt>maxPostSize</tt> or there's a problem reading or parsing the request.
+   * &lt;tt&gt;maxPostSize&lt;/tt&gt; or there's a problem reading or parsing the request.
    */
   public MultipartRequest(HttpServletRequest request,
                           String saveDirectory,
@@ -158,7 +157,7 @@ public class MultipartRequest {
    * saving any uploaded files to the given directory, and limiting the 
    * upload size to the specified length.  If the content is too large, an 
    * IOException is thrown.  This constructor actually parses the 
-   * <tt>multipart/form-data</tt> and throws an IOException if there's any 
+   * &lt;tt&gt;multipart/form-data&lt;/tt&gt; and throws an IOException if there's any
    * problem reading or parsing the request.
    *
    * @param request the servlet request.
@@ -166,7 +165,7 @@ public class MultipartRequest {
    * @param maxPostSize the maximum size of the POST content.
    * @param encoding the encoding of the response, such as ISO-8859-1
    * @exception IOException if the uploaded content is larger than 
-   * <tt>maxPostSize</tt> or there's a problem reading or parsing the request.
+   * &lt;tt&gt;maxPostSize&lt;/tt&gt; or there's a problem reading or parsing the request.
    */
   public MultipartRequest(HttpServletRequest request,
                           String saveDirectory,
@@ -198,7 +197,7 @@ public class MultipartRequest {
    * saving any uploaded files to the given directory, and limiting the 
    * upload size to the specified length.  If the content is too large, an 
    * IOException is thrown.  This constructor actually parses the 
-   * <tt>multipart/form-data</tt> and throws an IOException if there's any 
+   * &lt;tt&gt;multipart/form-data&lt;/tt&gt; and throws an IOException if there's any
    * problem reading or parsing the request.
    *
    * To avoid file collisions, this constructor takes an implementation of the
@@ -210,7 +209,7 @@ public class MultipartRequest {
    * @param encoding the encoding of the response, such as ISO-8859-1
    * @param policy a pluggable file rename policy
    * @exception IOException if the uploaded content is larger than 
-   * <tt>maxPostSize</tt> or there's a problem reading or parsing the request.
+   * &lt;tt&gt;maxPostSize&lt;/tt&gt; or there's a problem reading or parsing the request.
    */
   public void parse(HttpServletRequest request,
                           String saveDirectory,
@@ -218,10 +217,12 @@ public class MultipartRequest {
                           String encoding,
                           FileRenamePolicy policy) throws IOException {
     // Sanity check values
-    if (request == null)
-      throw new IllegalArgumentException("request cannot be null");
-    if (saveDirectory == null)
-      throw new IllegalArgumentException("saveDirectory cannot be null");
+    if (request == null) {
+        throw new IllegalArgumentException("request cannot be null");
+    }
+    if (saveDirectory == null) {
+        throw new IllegalArgumentException("saveDirectory cannot be null");
+    }
     if (maxPostSize <= 0) {
       throw new IllegalArgumentException("maxPostSize must be positive");
     }
@@ -230,12 +231,14 @@ public class MultipartRequest {
     File dir = new File(saveDirectory);
 
     // Check saveDirectory is truly a directory
-    if (!dir.isDirectory())
-      throw new IllegalArgumentException("Not a directory: " + saveDirectory);
+    if (!dir.isDirectory()) {
+        throw new IllegalArgumentException("Not a directory: " + saveDirectory);
+    }
 
     // Check saveDirectory is writable
-    if (!dir.canWrite())
-      throw new IllegalArgumentException("Not writable: " + saveDirectory);
+    if (!dir.canWrite()) {
+        throw new IllegalArgumentException("Not writable: " + saveDirectory);
+    }
 
     // Parse the incoming multipart, storing files in the dir provided, 
     // and populate the meta objects which describe what we found
@@ -247,8 +250,7 @@ public class MultipartRequest {
     // Ben Johnson, ben.johnson@merrillcorp.com, for the idea.
     if (request.getQueryString() != null) {
       // Let HttpUtils create a name->String[] structure
-      Hashtable queryParameters =
-        HttpUtils.parseQueryString(request.getQueryString());
+      Hashtable queryParameters = HttpUtils.parseQueryString(request.getQueryString());
       // For our own use, name it a name->Vector structure
       Enumeration queryParameterNames = queryParameters.keys();
       while (queryParameterNames.hasMoreElements()) {

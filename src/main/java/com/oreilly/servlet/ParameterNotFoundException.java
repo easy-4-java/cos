@@ -9,7 +9,7 @@ package com.oreilly.servlet;
  *
  * @see com.oreilly.servlet.ParameterParser
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1998
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
  * @version 1.0, 98/09/18
  */
 public class ParameterNotFoundException extends Exception {

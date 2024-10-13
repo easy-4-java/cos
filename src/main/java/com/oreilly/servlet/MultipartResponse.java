@@ -4,40 +4,41 @@
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 /** 
- * A utility class to generate <tt>multipart/x-mixed-replace</tt> responses,
+ * A utility class to generate &lt;tt&gt;multipart/x-mixed-replace&lt;/tt&gt; responses,
  * the kind of responses that implement server push.  Note that Microsoft
  * Internet Explorer does not understand this sort of response.
- * <p>
+ * &lt;p&gt;
  * To use this class, first construct a new MultipartResponse 
  * passing to its constructor the servlet's response parameter.  
  * MultipartResponse uses the response object to fetch the 
  * servlet's output stream and to set the response's content type.
- * <p>
- * Then, for each page of content, begin by calling <tt>startResponse()</tt>
+ * &lt;p&gt;
+ * Then, for each page of content, begin by calling &lt;tt&gt;startResponse()&lt;/tt&gt;
  * passing in the content type for that page.  Send the content for the 
  * page by writing to the output stream as usual.  A call to 
- * <tt>endResponse()</tt> ends the page and flushes the content so the 
- * client can see it.  At this point a <tt>sleep()</tt> or other delay
+ * &lt;tt&gt;endResponse()&lt;/tt&gt; ends the page and flushes the content so the
+ * client can see it.  At this point a &lt;tt&gt;sleep()&lt;/tt&gt; or other delay
  * can be added until the next page is ready for sending.
- * <p>
- * The call to <tt>endResponse()</tt> is optional.  The 
- * <tt>startResponse()</tt> method knows whether the last response has 
+ * &lt;p&gt;
+ * The call to &lt;tt&gt;endResponse()&lt;/tt&gt; is optional.  The
+ * &lt;tt&gt;startResponse()&lt;/tt&gt; method knows whether the last response has
  * been ended, and ends it itself if necessary.  However, it's wise to 
- * call <tt>endResponse()</tt> if there's to be a delay between the
+ * call &lt;tt&gt;endResponse()&lt;/tt&gt; if there's to be a delay between the
  * time one response ends and the next begins.  It lets the client display 
  * the latest response during the time it waits for the next one.
- * <p>
+ * &lt;p&gt;
  * Finally, after each response page has been sent, a call to the 
- * <tt>finish()</tt> method finishes the multipart response and sends a 
+ * &lt;tt&gt;finish()&lt;/tt&gt; method finishes the multipart response and sends a
  * code telling the client there will be no more responses.
- * <p>
+ * &lt;p&gt;
  * For example:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * MultipartResponse multi = new MultipartResponse(res);
  * &nbsp;
  * multi.startResponse("text/plain");
@@ -56,11 +57,11 @@ import javax.servlet.http.*;
  * ServletUtils.returnFile(req.getRealPath("/images/go.gif"), out);
  * &nbsp;
  * multi.finish();
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * @see ServletUtils
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1998
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
  * @version 1.0, 98/09/18
  */
 public class MultipartResponse {

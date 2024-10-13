@@ -4,26 +4,28 @@
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /** 
  * A superclass for HTTP servlets that wish to accept raw socket 
  * connections.  DaemonHttpServlet 
- * starts listening for client requests in its <tt>init()</tt> method 
- * and stops listening in its <tt>destroy()</tt> method.  In between, 
+ * starts listening for client requests in its &lt;tt&gt;init()&lt;/tt&gt; method
+ * and stops listening in its &lt;tt&gt;destroy()&lt;/tt&gt; method.  In between,
  * for every connection it receives, it calls the abstract 
- * <tt>handleClient(Socket client)</tt> method.  This method should 
+ * &lt;tt&gt;handleClient(Socket client)&lt;/tt&gt; method.  This method should
  * be implemented by the servlet subclassing DaemonHttpServlet.
  * The port on which the servlet is to listen is determined by the 
- * <tt>getSocketPort()</tt> method.
+ * &lt;tt&gt;getSocketPort()&lt;/tt&gt; method.
  *
  * @see com.oreilly.servlet.RemoteDaemonHttpServlet
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1998
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
  * @version 1.0, 98/09/18
  */
 public abstract class DaemonHttpServlet extends HttpServlet {
@@ -37,7 +39,7 @@ public abstract class DaemonHttpServlet extends HttpServlet {
   /**
    * Begins a thread listening for socket connections.  Subclasses
    * that override this method must be sure to first call 
-   * <tt>super.init(config)</tt>.
+   * &lt;tt&gt;super.init(config)&lt;/tt&gt;.
    * 
    * @param config the servlet config
    * @exception ServletException if a servlet exception occurs
@@ -58,8 +60,8 @@ public abstract class DaemonHttpServlet extends HttpServlet {
   /**
    * Returns the socket port on which the servlet will listen.
    * A servlet can change the port in three ways: by using the 
-   * <tt>socketPort</tt> init parameter, by setting the <tt>DEFAULT_PORT</tt>
-   * variable before calling <tt>super.init()</tt>, or by overriding this 
+   * &lt;tt&gt;socketPort&lt;/tt&gt; init parameter, by setting the &lt;tt&gt;DEFAULT_PORT&lt;/tt&gt;
+   * variable before calling &lt;tt&gt;super.init()&lt;/tt&gt;, or by overriding this
    * method's implementation.
    *
    * @return the port number on which to listen
@@ -79,7 +81,7 @@ public abstract class DaemonHttpServlet extends HttpServlet {
   /**
    * Halts the thread listening for socket connections.  Subclasses
    * that override this method must be sure to first call 
-   * <tt>super.destroy()</tt>.
+   * &lt;tt&gt;super.destroy()&lt;/tt&gt;.
    */
   public void destroy() {
     try {

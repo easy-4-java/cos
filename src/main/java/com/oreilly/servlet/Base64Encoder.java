@@ -9,18 +9,18 @@ import java.io.*;
 /** 
  * A class to encode Base64 streams and strings.  
  * See RFC 1521 section 5.2 for details of the Base64 algorithm.
- * <p>
+ * &lt;p&gt;
  * This class can be used for encoding strings:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * String unencoded = "webmaster:try2gueSS";
  * String encoded = Base64Encoder.encode(unencoded);
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  * or for encoding streams:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * OutputStream out = new Base64Encoder(System.out);
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2000
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
  * @version 1.2, 2002/11/01, added encode(byte[]) method to better handle
  *                           binary data (thanks to Sean Graham)
  * @version 1.1, 2000/11/17, fixed bug with sign bit for char values

@@ -4,19 +4,23 @@
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A request wrapper to support MultipartFilter.  
  * The filter capability requires Servlet API 2.3.
- * <p>
+ * &lt;p&gt;
  * See Jason Hunter's June 2001 article in JavaWorld for a full explanation of 
  * the class usage.
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2001
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2001
  * @version 1.1, 2002/11/15, added getOriginalFileName() to match
  *                           MultipartRequest
  * @version 1.0, 2001/06/19

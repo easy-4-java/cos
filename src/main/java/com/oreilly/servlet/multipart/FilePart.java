@@ -4,17 +4,13 @@
 
 package com.oreilly.servlet.multipart;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import javax.servlet.ServletInputStream;
+import jakarta.servlet.ServletInputStream;
+
+import java.io.*;
 
 /**
- * A <code>FilePart</code> is an upload part which represents a 
- * <code>INPUT TYPE="file"</code> form parameter.  Note that because file 
+ * A <code>FilePart</code> is an upload part which represents a
+ * <code>INPUT TYPE="file"</code> form parameter.  Note that because file
  * upload data arrives via a single InputStream, each FilePart's contents
  * must be read before moving onto the next part.  Don't try to store a
  * FilePart object for later processing because by then their content will
@@ -76,7 +72,7 @@ public class FilePart extends Part {
   
   /**
    * Returns the name that the file was stored with on the remote system, 
-   * or <code>null</code> if the user didn't enter a file to be uploaded. 
+   * or <code>null</code> if the user didn't enter a file to be uploaded.
    * Note: this is not the same as the name of the form parameter used to 
    * transmit the file; that is available from the <code>getName</code>
    * method.  Further note: if file rename logic is in effect, the file

@@ -4,12 +4,12 @@
 
 package com.oreilly.servlet.multipart;
 
-import java.io.OutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
- * A <code>MacBinaryDecoderOutput</code> filters MacBinary files to normal 
+ * A <code>MacBinaryDecoderOutput</code> filters MacBinary files to normal
  * files on the fly; optimized for speed more than readability.
  * 
  * @author Jason Hunter
@@ -48,7 +48,7 @@ public class MacBinaryDecoderOutputStream extends FilterOutputStream {
       bytesFiltered += len;
     }
     // If the write is entirely within the data fork, write it directly
-    else if (bytesFiltered >= 128 && 
+    else if (bytesFiltered >= 128 &&
              (bytesFiltered + len) <= (128 + dataForkLength)) {
       out.write(b, off, len);
       bytesFiltered += len;

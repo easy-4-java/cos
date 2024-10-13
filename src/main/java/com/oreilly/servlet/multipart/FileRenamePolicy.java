@@ -4,7 +4,7 @@
 
 package com.oreilly.servlet.multipart;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * An interface to provide a pluggable file renaming policy, particularly

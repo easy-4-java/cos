@@ -4,29 +4,29 @@
 
 package com.oreilly.servlet.multipart;
 
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletInputStream;
 
 /** 
  * A utility class to handle <code>multipart/form-data</code> requests,
  * the kind of requests that support file uploads.  This class uses a 
  * "pull" model where the reading of incoming files and parameters is 
  * controlled by the client code, which allows incoming files to be stored 
- * into any <code>OutputStream</code>.  If you wish to use an API which 
- * resembles <code>HttpServletRequest</code>, use the "push" model 
- * <code>MultipartRequest</code> instead.  It's an easy-to-use wrapper 
+ * into any <code>OutputStream</code>.  If you wish to use an API which
+ * resembles <code>HttpServletRequest</code>, use the "push" model
+ * <code>MultipartRequest</code> instead.  It's an easy-to-use wrapper
  * around this class.
- * <p>
+ * &lt;p&gt;
  * This class can receive arbitrarily large files (up to an artificial limit 
  * you can set), and fairly efficiently too.  
  * It cannot handle nested data (multipart content within multipart content).
- * It <b>can</b> now with the latest release handle internationalized content
+ * It &lt;b&gt;can&lt;/b&gt; now with the latest release handle internationalized content
  * (such as non Latin-1 filenames).
- * <p>
+ * &lt;p&gt;
  * It also optionally includes enhanced buffering and Content-Length
  * limitation.  Buffering is only required if your servlet container is 
  * poorly implemented (many are, including Tomcat 3.2),
@@ -36,9 +36,9 @@ import javax.servlet.ServletInputStream;
  * that your servlet is hanging trying to read the input stram from the POST, 
  * and it is similarly recommended because it only has a minimal impact on 
  * performance.
- * <p>
+ * &lt;p&gt;
  * See the included upload.war for an example of how to use this class.
- * <p>
+ * &lt;p&gt;
  * The full file upload specification is contained in experimental RFC 1867,
  * available at <a href="http://www.ietf.org/rfc/rfc1867.txt">
  * http://www.ietf.org/rfc/rfc1867.txt</a>.

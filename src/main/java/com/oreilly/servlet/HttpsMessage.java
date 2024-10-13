@@ -43,23 +43,22 @@
  OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- Matt Towers <eBozo_AT_hotmail_DOT_com> 
+ Matt Towers <eBozo_AT_hotmail_DOT_com>
 */
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.security.Security;
+import java.net.URL;
+import java.net.URLStreamHandlerFactory;
 import java.security.Provider;
+import java.security.Security;
 
 /**
  * A class to simplify HTTP/HTTPS client-server communication.	It abstracts
  * the communication into messages, which can be either GET or POST.
- * <p>
+ * &lt;p&gt;
  * It can be used like this:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * &nbsp;
  * HttpsMessage msg = new HttpsMessage("https://[some server]");
  * &nbsp;
@@ -67,16 +66,16 @@ import java.security.Provider;
  * props.put("name", "value");
  * &nbsp;
  * InputStream in = msg.sendGetMessage(props);
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  * This class extends the HttpMessage class
  * written by Jason Hunter at servlets.com.
  * The HttpMessage class can be found in the com.oreilly.servlet
  * package found at www.servlets.com
- * <p>
+ * &lt;p&gt;
  * For information see http://www.javaworld.com/javatips/jw-javatip96.html
  * Note this class works with JDK 1.2 or later only.
- * <p>
- * @author <b>Matt Towers</b>
+ * &lt;p&gt;
+ * @author &lt;b&gt;Matt Towers&lt;/b&gt;
  * @author Copyright &#169; 2000
  * @version 1.0, 2000/05/05
  */

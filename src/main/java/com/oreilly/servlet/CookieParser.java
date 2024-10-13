@@ -4,10 +4,10 @@
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Hashtable;
 
 /** 
  * A class to simplify cookie retrieval.  It can retrieve cookie values by
@@ -15,9 +15,9 @@ import javax.servlet.http.*;
  * required).  It can also throw an exception when a cookie is not found 
  * (simplifying error handling), and can accept default values (eliminating 
  * error handling).
- * <p>
+ * &lt;p&gt;
  * It is used like this:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * CookieParser parser = new CookieParser(req);
  * &nbsp;
  * float ratio = parser.getFloatCookie("ratio", 1.0);
@@ -32,11 +32,11 @@ import javax.servlet.http.*;
  * catch (CookieNotFoundException e) {
  *   handleNoCount();
  * }
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * @see com.oreilly.servlet.CookieNotFoundException
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2000
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
  * @version 1.0, 2000/03/19
  */
 public class CookieParser {

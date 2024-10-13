@@ -9,18 +9,18 @@ import java.io.*;
 /** 
  * A class to decode Base64 streams and strings.  
  * See RFC 1521 section 5.2 for details of the Base64 algorithm.
- * <p>
+ * &lt;p&gt;
  * This class can be used for decoding strings:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * String encoded = "d2VibWFzdGVyOnRyeTJndWVTUw";
  * String decoded = Base64Decoder.decode(encoded);
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  * or for decoding streams:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * InputStream in = new Base64Decoder(System.in);
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2000
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
  * @version 1.1, 2002/11/01, added decodeToBytes() to better handle binary
  *                           data (thanks to Sean Graham)
  * @version 1.0, 2000/06/11

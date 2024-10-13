@@ -5,28 +5,31 @@
 package com.oreilly.servlet;
 
 import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /** 
  * A class to help send SMTP email.  It can be used by any Java program, not
  * just servlets.  Servlets are likely to use this class to:
- * <ul>
- * <li>Send submitted form data to interested parties
- * <li>Send an email page to an administrator in case of error
- * <li>Send the client an order confirmation
- * </ul>
- * <p>
+ * &lt;ul&gt;
+ * &lt;li&gt;Send submitted form data to interested parties
+ * &lt;li&gt;Send an email page to an administrator in case of error
+ * &lt;li&gt;Send the client an order confirmation
+ * &lt;/ul&gt;
+ * &lt;p&gt;
  * This class is an improvement on the sun.net.smtp.SmtpClient class 
  * found in the JDK.  This version has extra functionality, and can be used
  * with JVMs that did not extend from the JDK.  It's not as robust as
  * the JavaMail Standard Extension classes, but it's easier to use and 
  * easier to install.
- * <p>
+ * &lt;p&gt;
  * It can be used like this:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * String mailhost = "localhost";  // or another mail host
- * String from = "Mail Message Servlet <MailMessage@somedomain.com>";
+ * String from = "Mail Message Servlet &lt;MailMessage@somedomain.com&gt;";
  * String to = "to@somedomain.com";
  * String cc1 = "cc1@somedomain.com";
  * String cc2 = "cc2@somedomain.com";
@@ -49,25 +52,25 @@ import java.util.*;
  * }
  * &nbsp;
  * msg.sendAndClose();
- * </pre></blockquote>
- * <p>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
+ * &lt;p&gt;
  * Be sure to set the from address, then set the recepient 
  * addresses, then set the subject and other headers, then get the 
  * PrintStream, then write the message, and finally send and close.
  * The class does minimal error checking internally; it counts on the mail
  * host to complain if there's any malformatted input or out of order 
  * execution.  
- * <p>
+ * &lt;p&gt;
  * An attachment mechanism based on RFC 1521 could be implemented on top of
  * this class.  In the meanwhile, JavaMail is the best solution for sending
  * email with attachments.
- * <p>
+ * &lt;p&gt;
  * Still to do:
- * <ul>
- * <li>Figure out how to close the connection in case of error
- * </ul>
+ * &lt;ul&gt;
+ * &lt;li&gt;Figure out how to close the connection in case of error
+ * &lt;/ul&gt;
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1999
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1999
  * @version 1.4, 2003/01/06, made isResponseOK() better handle null responses
  * @version 1.3, 2002/12/13, added support for EBCDIC machines (needs J2SE 1.4)
  * @version 1.2, 2002/11/01, added logic to suppress CC: header if no CC addrs

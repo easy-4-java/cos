@@ -4,19 +4,24 @@
 
 package com.oreilly.servlet;
 
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletRegistration;
+import jakarta.servlet.ServletRequest;
+
 import java.io.*;
-import java.lang.reflect.*;
-import java.net.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-// import javax.servlet.jsp.*;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.StringTokenizer;
+import java.util.Vector;
+// import jakarta.servlet.jsp.*;
 
 /** 
  * A collection of static utility methods useful to servlets.
  * Some methods require Servlet API 2.2.
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1998-2000
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998-2000
  * @version 1.5, 2001/02/11, added getResource() ".." check
  * @version 1.4, 2000/09/27, finalized getResource() behavior
  * @version 1.3, 2000/08/15, improved getStackTraceAsString() to take Throwable
@@ -47,7 +52,9 @@ public class ServletUtils {
       }
     }
     finally {
-      if (fis != null) fis.close();
+      if (fis != null) {
+          fis.close();
+      }
     }
   }
 
@@ -114,7 +121,7 @@ public class ServletUtils {
   /**
    * Gets a reference to the named servlet, attempting to load it 
    * through an HTTP request if necessary.  Returns null if there's a problem.
-   * This method behaves similarly to <tt>ServletContext.getServlet()</tt>
+   * This method behaves similarly to &lt;tt&gt;ServletContext.getServlet()&lt;/tt&gt;
    * except, while that method may return null if the 
    * named servlet wasn't already loaded, this method tries to load 
    * the servlet using a dummy HTTP request.  Only loads HTTP servlets.
@@ -124,13 +131,15 @@ public class ServletUtils {
    * @param context the servlet context
    * @return the named servlet, or null if there was a problem
    */
-  public static Servlet getServlet(String name,
-                                   ServletRequest req,
-                                   ServletContext context) {
+  public static ServletRegistration getServletRegistration(String name,
+                                               ServletRequest req,
+                                               ServletContext context) {
     try {
       // Try getting the servlet the old fashioned way
-      Servlet servlet = context.getServlet(name);
-      if (servlet != null) return servlet;
+      ServletRegistration servlet = context.getServletRegistration(name);
+      if (servlet != null) {
+          return servlet;
+      }
 
       // If getServlet() returned null, we have to load it ourselves.
       // Do this by making an HTTP GET request to the servlet.
@@ -147,7 +156,7 @@ public class ServletUtils {
       out.close();
 
       // Try getting the servlet again.
-      return context.getServlet(name);
+      return context.getServletRegistration(name);
     }
     catch (Exception e) {
       // If there's any problem, return null.

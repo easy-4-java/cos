@@ -9,7 +9,7 @@ package com.oreilly.servlet;
  *
  * @see com.oreilly.servlet.CookieParser
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2000
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
  * @version 1.0, 2000/03/19
  */
 public class CookieNotFoundException extends Exception {

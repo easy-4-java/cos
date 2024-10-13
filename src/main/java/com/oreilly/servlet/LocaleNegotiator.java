@@ -4,27 +4,27 @@
 
 package com.oreilly.servlet;
 
-import java.io.*;
-import java.util.*;
-
-import com.oreilly.servlet.LocaleToCharsetMap;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 /** 
  * A class to aid in servlet internationalization.  It determines, from a 
  * client request, the best charset, locale, and resource bundle to use 
  * with the response.
- * <p>
+ * &lt;p&gt;
  * LocaleNegotiator works by scanning through the client's language 
- * preferences (sent by browsers in the <tt>Accept-Language</tt> header) 
+ * preferences (sent by browsers in the &lt;tt&gt;Accept-Language&lt;/tt&gt; header)
  * looking for any 
  * language for which there exists is a corresponding resource bundle.
  * When it finds a correspondence, it uses the LocaleToCharsetMap class
  * to determine the charset.  If there's any problem, it tries to fall 
  * back to US English.  The logic currently ignores the client's charset 
- * preferences (sent in the <tt>Accept-Charset</tt> header).
- * <p>
+ * preferences (sent in the &lt;tt&gt;Accept-Charset&lt;/tt&gt; header).
+ * &lt;p&gt;
  * It can be used like this:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * String bundleName = "BundleName";
  * String acceptLanguage = req.getHeader("Accept-Language");
  * String acceptCharset = req.getHeader("Accept-Charset");
@@ -43,11 +43,11 @@ import com.oreilly.servlet.LocaleToCharsetMap;
  * PrintWriter out = res.getWriter();
  * &nbsp;
  * out.println(bundle.getString("resource"));
- * </pre></blockquote>
+ * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * @see com.oreilly.servlet.LocaleToCharsetMap
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1998
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
  * @version 1.0, 98/09/18
  */
 public class LocaleNegotiator {

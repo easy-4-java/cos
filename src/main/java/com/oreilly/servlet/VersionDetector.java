@@ -9,14 +9,14 @@ package com.oreilly.servlet;
  * current JDK version number.  It looks at the available classes and
  * variables to make the determination.  The class can detect Servlet 
  * API versions up to 2.2, and JDK versions up to 1.3.
- * <p>
+ * &lt;p&gt;
  * It can be used like this:
- * <blockquote><pre>
+ * &lt;blockquote&gt;&lt;pre&gt;
  * String servletVersion = VersionDetector.getServletVersion();
  * &nbsp;
  * String javaVersion = VersionDetector.getJavaVersion();
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 2000
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
  * @version 1.3, 2002/04/22, added detection of JDK 1.5 and Servlet API 2.4
  * @version 1.2, 2001/04/11, added detection of JDK 1.4
  * @version 1.1, 2000/09/22, added detection of Servlet API 2.3
@@ -39,26 +39,26 @@ public class VersionDetector {
 
     // Determine the servlet version by looking at available classes
     //   and variables
-    // javax.servlet.http.HttpSession was introduced in Servlet API 2.0
-    // javax.servlet.RequestDispatcher was introduced in Servlet API 2.1
-    // javax.servlet.http.HttpServletResponse.SC_EXPECTATION_FAILED was
+    // jakarta.servlet.http.HttpSession was introduced in Servlet API 2.0
+    // jakarta.servlet.RequestDispatcher was introduced in Servlet API 2.1
+    // jakarta.servlet.http.HttpServletResponse.SC_EXPECTATION_FAILED was
     //   introduced in Servlet API 2.2
-    // javax.servlet.Filter is slated to be introduced in Servlet API 2.3
+    // jakarta.servlet.Filter is slated to be introduced in Servlet API 2.3
     // Count up versions until a NoClassDefFoundError or NoSuchFieldException
     //   ends the try
     String ver = null;
     try {
       ver = "1.0";
-      Class.forName("javax.servlet.http.HttpSession");
+      Class.forName("jakarta.servlet.http.HttpSession");
       ver = "2.0";
-      Class.forName("javax.servlet.RequestDispatcher");
+      Class.forName("jakarta.servlet.RequestDispatcher");
       ver = "2.1"; 
-      Class.forName("javax.servlet.http.HttpServletResponse")
+      Class.forName("jakarta.servlet.http.HttpServletResponse")
                    .getDeclaredField("SC_EXPECTATION_FAILED");
       ver = "2.2";
-      Class.forName("javax.servlet.Filter");
+      Class.forName("jakarta.servlet.Filter");
       ver = "2.3";
-      Class.forName("javax.servlet.ServletRequestListener");
+      Class.forName("jakarta.servlet.ServletRequestListener");
       ver = "2.4";
     }
     catch (Throwable t) {

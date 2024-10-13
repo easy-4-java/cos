@@ -4,15 +4,16 @@
 
 package com.oreilly.servlet.multipart;
 
+import jakarta.servlet.ServletInputStream;
+
 import java.io.FilterInputStream;
 import java.io.IOException;
-import javax.servlet.ServletInputStream;
 
 /**
- * A <code>PartInputStream</code> filters a <code>ServletInputStream</code>, 
+ * A <code>PartInputStream</code> filters a <code>ServletInputStream</code>,
  * providing access to a single MIME part contained with in which ends with 
  * the boundary specified.  It uses buffering to provide maximum performance.
- * <p>
+ * &lt;p&gt;
  * Note the <code>readLine</code> method of <code>ServletInputStream</code>
  * has the annoying habit of adding a \r\n to the end of the last line.  Since
  * we want a byte-for-byte transfer, we have to cut those chars. This means 
@@ -121,8 +122,8 @@ public class PartInputStream extends FilterInputStream {
   /**
    * See the general contract of the <code>read</code>
    * method of <code>InputStream</code>.
-   * <p>
-   * Returns <code>-1</code> (end of file) when the MIME 
+   * &lt;p&gt;
+   * Returns <code>-1</code> (end of file) when the MIME
    * boundary of this part is encountered.
    *
    * @return     the next byte of data, or <code>-1</code> if the end of the
@@ -142,7 +143,7 @@ public class PartInputStream extends FilterInputStream {
   /**
    * See the general contract of the <code>read</code>
    * method of <code>InputStream</code>.
-   * <p>
+   * &lt;p&gt;
    * Returns <code>-1</code> (end of file) when the MIME
    * boundary of this part is encountered.
    *
@@ -159,8 +160,8 @@ public class PartInputStream extends FilterInputStream {
   /**
    * See the general contract of the <code>read</code>
    * method of <code>InputStream</code>.
-   * <p>
-   * Returns <code>-1</code> (end of file) when the MIME 
+   * &lt;p&gt;
+   * Returns <code>-1</code> (end of file) when the MIME
    * boundary of this part is encountered.
    *
    * @param      b     the buffer into which the data is read.
@@ -224,11 +225,11 @@ public class PartInputStream extends FilterInputStream {
   /**
    * Closes this input stream and releases any system resources 
    * associated with the stream. 
-   * <p>
+   * &lt;p&gt;
    * This method will read any unread data in the MIME part so that the next 
    * part starts an an expected place in the parent <code>InputStream</code>.
    * Note that if the client code forgets to call this method on error,
-   * <code>MultipartParser</code> will call it automatically if you call 
+   * <code>MultipartParser</code> will call it automatically if you call
    * <code>readNextPart()</code>.
    *
    * @exception  IOException  if an I/O error occurs.

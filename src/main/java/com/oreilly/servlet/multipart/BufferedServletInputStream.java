@@ -4,23 +4,23 @@
  
 package com.oreilly.servlet.multipart;
 
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletInputStream;
+
 import java.io.IOException;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
-
 /**
- * A <code>BufferedServletInputStream</code> wraps a 
- * <code>ServletInputStream</code> in order to provide input buffering and to 
- * avoid calling the the <code>readLine</code> method of the wrapped 
+ * A <code>BufferedServletInputStream</code> wraps a
+ * <code>ServletInputStream</code> in order to provide input buffering and to
+ * avoid calling the the <code>readLine</code> method of the wrapped
  * <code>ServletInputStream</code>.
- * <p>
+ * &lt;p&gt;
  * This is necessary because some servlet containers rely on the default 
- * implementation of the <code>readLine</code> method provided by the Servlet 
+ * implementation of the <code>readLine</code> method provided by the Servlet
  * API classes, which is very slow. Tomcat 3.2, Tomcat 3.1, the JSWDK 1.0 web 
  * server and the JSDK2.1 web server are all known to need this class for 
  * performance reasons. 
- * <p>
+ * &lt;p&gt;
  * Also, it may be used to work around a bug in the Servlet API 2.0 
  * implementation of <code>readLine</code> which contains a bug that causes
  * <code>ArrayIndexOutOfBoundsExceptions</code> under certain conditions.
@@ -45,7 +45,7 @@ public class BufferedServletInputStream extends ServletInputStream {
   private int pos;
   
   /**
-   * Creates a <code>BufferedServletInputStream</code> that wraps the provided 
+   * Creates a <code>BufferedServletInputStream</code> that wraps the provided
    * <code>ServletInputStream</code>.
    * 
    * @param in  a servlet input stream.
@@ -70,7 +70,7 @@ public class BufferedServletInputStream extends ServletInputStream {
   }
     
   /**
-   * Implement buffering on top of the <code>readLine</code> method of 
+   * Implement buffering on top of the <code>readLine</code> method of
    * the wrapped <code>ServletInputStream</code>.
    *
    * @param b    an array of bytes into which data is read.
@@ -145,7 +145,7 @@ public class BufferedServletInputStream extends ServletInputStream {
   }
   
   /**
-   * Implement buffering on top of the <code>read</code> method of 
+   * Implement buffering on top of the <code>read</code> method of
    * the wrapped <code>ServletInputStream</code>.
    *
    * @return     the next byte of data, or <code>-1</code> if the end of the
@@ -163,7 +163,7 @@ public class BufferedServletInputStream extends ServletInputStream {
   }
 
   /**
-   * Implement buffering on top of the <code>read</code> method of 
+   * Implement buffering on top of the <code>read</code> method of
    * the wrapped <code>ServletInputStream</code>.
    *
    * @param      b     the buffer into which the data is read.

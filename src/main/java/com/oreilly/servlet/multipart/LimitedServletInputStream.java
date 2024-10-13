@@ -4,14 +4,14 @@
  
 package com.oreilly.servlet.multipart;
 
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletInputStream;
+
 import java.io.IOException;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
-
 /**
- * A <code>LimitedServletInputStream</code> wraps another 
- * <code>ServletInputStream</code> in order to keep track of how many bytes 
+ * A <code>LimitedServletInputStream</code> wraps another
+ * <code>ServletInputStream</code> in order to keep track of how many bytes
  * have been read and detect when the Content-Length limit has been reached. 
  * This is necessary since some servlet containers are slow to notice the end 
  * of stream and cause the client code to hang if it tries to read past it.
@@ -68,7 +68,7 @@ public class LimitedServletInputStream extends ServletInputStream {
   }
 
   /**
-   * Implement length limitation on top of the <code>read</code> method of 
+   * Implement length limitation on top of the <code>read</code> method of
    * the wrapped <code>ServletInputStream</code>.
    *
    * @return     the next byte of data, or <code>-1</code> if the end of the
@@ -88,7 +88,7 @@ public class LimitedServletInputStream extends ServletInputStream {
   }
   
   /**
-   * Implement length limitation on top of the <code>read</code> method of 
+   * Implement length limitation on top of the <code>read</code> method of
    * the wrapped <code>ServletInputStream</code>.
    *
    * @param      b     destination buffer.

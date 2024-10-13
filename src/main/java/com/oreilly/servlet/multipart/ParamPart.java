@@ -4,13 +4,14 @@
 
 package com.oreilly.servlet.multipart;
 
+import jakarta.servlet.ServletInputStream;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import javax.servlet.ServletInputStream;
 
 /**
- * A <code>ParamPart</code> is an upload part which represents a normal 
+ * A <code>ParamPart</code> is an upload part which represents a normal
  * <code>INPUT</code> (for example a non <code>TYPE="file"</code>) form
  * parameter.
  * 

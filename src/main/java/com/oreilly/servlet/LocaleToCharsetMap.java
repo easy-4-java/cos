@@ -4,7 +4,8 @@
 
 package com.oreilly.servlet;
 
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Locale;
 
 /** 
  * A mapping to determine the (somewhat arbitrarily) preferred charset for 
@@ -13,7 +14,7 @@ import java.util.*;
  *
  * @see com.oreilly.servlet.LocaleNegotiator
  *
- * @author <b>Jason Hunter</b>, Copyright &#169; 1998
+ * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
  * @version 1.0, 98/09/18
  */
 public class LocaleToCharsetMap {
