@@ -6,7 +6,7 @@
 	<artifactId>cos</artifactId>
 	<packaging>jar</packaging>
 	<name>Cos</name>
-	<version>6.0.x.20241003.RELEASE</version>
+	<version>6.0.x.20260806.RELEASE</version>
 	<url>https://gitee.com/hiwepy/cos</url>
 	<description>Cos</description>
 
@@ -326,7 +326,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		
 		<maven.version>3.0</maven.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
