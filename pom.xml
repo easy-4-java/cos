@@ -22,18 +22,17 @@
 		</license>
 	</licenses>
 
-	<developers>
-		<developer>
-			<id>hiwepy</id>
-			<name>wandl</name>
-			<email>hiwepy@gmail.com</email>
-			<url>https://wiki.hiwepy.com</url>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+8</timezone>
-		</developer>
-	</developers>
+	    <developers>
+        <developer>
+            <name>Loong Wan</name>
+            <email>hiwepy@gmail.com</email>
+            <url>https://github.com/loong10k</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
 
 	<scm>
 		<connection>scm:git:git@gitee.com:hiwepy/cos.git</connection>
