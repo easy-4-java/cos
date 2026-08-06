@@ -1,6 +1,8 @@
 # cos
 
-[![Java](https://img.shields.io/badge/Java-11-orange)] [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
+[English](./README.md) | [简体中文](./README.zh-CN.md)
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-green)
 
 > 经典的 O'Reilly COS（com.oreilly.servlet）工具库——文件上传、HTTP 消息与
 > Servlet 辅助类，适配 Jakarta EE Servlet API 的维护分支。
@@ -18,8 +20,6 @@
 - [9. 测试与构建](#9-测试与构建)
 - [10. 版本与分支](#10-版本与分支)
 - [11. 贡献与许可](#11-贡献与许可)
-
-[English](./README.md) | [简体中文](./README.zh-CN.md)
 
 ## 1. 项目概述
 
