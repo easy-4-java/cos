@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-green)
+[![Java](https://img.shields.io/badge/Java-17-orange)](https://github.com/easy-4-java/cos) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 > The classic O'Reilly COS (com.oreilly.servlet) utility library — file upload,
 > HTTP messaging and servlet helpers — maintained for the Jakarta EE Servlet API.
