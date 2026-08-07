@@ -4,7 +4,10 @@
 
 package com.oreilly.servlet;
 
+import lombok.NonNull;
+
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 /** 
  * A class to encode Base64 streams and strings.  
@@ -107,7 +110,7 @@ public class Base64Encoder extends FilterOutputStream {
    * @param len the length of the data
    * @exception IOException if an I/O error occurs
    */
-  public void write(byte[] buf, int off, int len) throws IOException {
+  public void write(byte @NonNull [] buf, int off, int len) throws IOException {
     // This could of course be optimized
     for (int i = 0; i < len; i++) {
       write(buf[off + i]);
@@ -147,11 +150,8 @@ public class Base64Encoder extends FilterOutputStream {
    */
   public static String encode(String unencoded) {
     byte[] bytes = null;
-    try {
-      bytes = unencoded.getBytes("8859_1");
-    }
-    catch (UnsupportedEncodingException ignored) { }
-    return encode(bytes);
+      bytes = unencoded.getBytes(StandardCharsets.ISO_8859_1);
+      return encode(bytes);
   }
 
   /**
@@ -169,7 +169,7 @@ public class Base64Encoder extends FilterOutputStream {
       encodedOut.write(bytes);
       encodedOut.close();
 
-      return out.toString("8859_1");
+      return out.toString(StandardCharsets.ISO_8859_1);
     }
     catch (IOException ignored) { return null; }
   }
@@ -181,21 +181,13 @@ public class Base64Encoder extends FilterOutputStream {
       return;
     }
 
-    Base64Encoder encoder = null;
-    BufferedInputStream in = null;
-    try {
-      encoder = new Base64Encoder(System.out);
-      in = new BufferedInputStream(new FileInputStream(args[0]));
+      try (Base64Encoder encoder = new Base64Encoder(System.out); BufferedInputStream in = new BufferedInputStream(new FileInputStream(args[0]))) {
 
-      byte[] buf = new byte[4 * 1024];  // 4K buffer
-      int bytesRead;
-      while ((bytesRead = in.read(buf)) != -1) {
-        encoder.write(buf, 0, bytesRead);
+          byte[] buf = new byte[4 * 1024];  // 4K buffer
+          int bytesRead;
+          while ((bytesRead = in.read(buf)) != -1) {
+              encoder.write(buf, 0, bytesRead);
+          }
       }
-    }
-    finally {
-      if (in != null) in.close();
-      if (encoder != null) encoder.close();
-    }
   }
 }

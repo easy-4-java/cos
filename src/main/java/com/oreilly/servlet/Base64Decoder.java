@@ -5,6 +5,8 @@
 package com.oreilly.servlet;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /** 
  * A class to decode Base64 streams and strings.  
@@ -109,8 +111,7 @@ public class Base64Decoder extends FilterInputStream {
     }
     // Fourth char use previous two bits and all six new bits
     else if (mode == 3) {
-      int decoded = ((carryOver << 6) + x) & 255;
-      return decoded;
+        return ((carryOver << 6) + x) & 255;
     }
     return -1;  // can't actually reach this line
   }
@@ -158,7 +159,7 @@ public class Base64Decoder extends FilterInputStream {
    * @return the decoded form of the encoded string
    */
   public static String decode(String encoded) {
-    return new String(decodeToBytes(encoded));
+    return new String(Objects.requireNonNull(decodeToBytes(encoded)));
   }
 
   /**
@@ -169,12 +170,9 @@ public class Base64Decoder extends FilterInputStream {
    */
   public static byte[] decodeToBytes(String encoded) {
     byte[] bytes = null;
-    try {
-      bytes = encoded.getBytes("8859_1");
-    }
-    catch (UnsupportedEncodingException ignored) { }
+      bytes = encoded.getBytes(StandardCharsets.ISO_8859_1);
 
-    Base64Decoder in = new Base64Decoder(
+      Base64Decoder in = new Base64Decoder(
                        new ByteArrayInputStream(bytes));
     
     ByteArrayOutputStream out = 
@@ -199,19 +197,14 @@ public class Base64Decoder extends FilterInputStream {
       return;
     }
 
-    Base64Decoder decoder = null;
-    try {
-      decoder = new Base64Decoder(
-                new BufferedInputStream(
-                new FileInputStream(args[0])));
-      byte[] buf = new byte[4 * 1024];  // 4K buffer
-      int bytesRead;
-      while ((bytesRead = decoder.read(buf)) != -1) {
-        System.out.write(buf, 0, bytesRead);
+      try (Base64Decoder decoder = new Base64Decoder(
+              new BufferedInputStream(
+                      new FileInputStream(args[0])))) {
+          byte[] buf = new byte[4 * 1024];  // 4K buffer
+          int bytesRead;
+          while ((bytesRead = decoder.read(buf)) != -1) {
+              System.out.write(buf, 0, bytesRead);
+          }
       }
-    }
-    finally {
-      if (decoder != null) decoder.close();
-    }
   }
 }

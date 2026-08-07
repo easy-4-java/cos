@@ -248,7 +248,7 @@ public class MultipartParser {
     // Content-Disposition: form-data; name="field1"; filename="file1.txt"
     // Content-Type: type/subtype
     // Content-Transfer-Encoding: binary
-    Vector headers = new Vector();
+    Vector<String> headers = new Vector<>();
 
     String line = readLine();
     if (line == null) {
@@ -294,9 +294,9 @@ public class MultipartParser {
     String origname = null;
     String contentType = "text/plain";  // rfc1867 says this is the default
 
-    Enumeration enu = headers.elements();
+    Enumeration<String> enu = headers.elements();
     while (enu.hasMoreElements()) {
-      String headerline = (String) enu.nextElement();
+      String headerline = enu.nextElement();
       if (headerline.toLowerCase().startsWith("content-disposition:")) {
         // Parse the content-disposition line
         String[] dispInfo = extractDispositionInfo(headerline);
@@ -322,7 +322,7 @@ public class MultipartParser {
     }
     else {
       // This is a file
-      if (filename.equals("")) {
+      if (filename.isEmpty()) {
         filename = null; // empty filename, probably an "empty" file param
       }
       lastFilePart = new FilePart(name, in, boundary,
@@ -458,7 +458,7 @@ public class MultipartParser {
    * @exception IOException	if an input or output exception has occurred.
    */
   private String readLine() throws IOException {
-    StringBuffer sbuf = new StringBuffer();
+    StringBuilder sbuf = new StringBuilder();
     int result;
     String line;
 
@@ -469,7 +469,7 @@ public class MultipartParser {
       }
     } while (result == buf.length);  // loop only if the buffer was filled
 
-    if (sbuf.length() == 0) {
+    if (sbuf.isEmpty()) {
       return null;  // nothing read, must be at the end of stream
     }
 
