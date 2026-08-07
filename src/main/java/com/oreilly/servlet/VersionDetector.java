@@ -137,10 +137,11 @@ public class VersionDetector {
   /**
    * Determines the JDK version number.
    * <p>
-   * On JDK 9 and later this uses {@link Runtime#version()} and returns
-   * the feature (major) version as a string (e.g. {@code "17"}).
-   * On JDK 8 or older (rare) it falls back to parsing
-   * {@code java.specification.version} (e.g. {@code "1.8"}).
+   * On JDK 9 and later this uses {@link Runtime#version()} (via reflection,
+   * so this source compiles on JDK 8 too) and returns the feature (major)
+   * version as a string (e.g. {@code "17"}).  On JDK 8 or older it falls
+   * back to parsing {@code java.specification.version} (e.g. {@code "1.8"}
+   * is normalized to {@code "8"}).
    *
    * @return a String representation of the JDK feature version, never
    *         {@code null}
@@ -157,31 +158,50 @@ public class VersionDetector {
         return cached;
       }
 
-      String ver;
-      try {
-        // Runtime.Version is JDK 9+; this is the canonical source.
-        int feature = Runtime.version().feature();
-        ver = Integer.toString(feature);
-      } catch (LinkageError e) {
-        // Fallback for the (now very unlikely) JDK 8 runtime.
-        String spec = System.getProperty("java.specification.version", "");
-        if (spec.isEmpty()) {
-          ver = "unknown";
-        } else if (spec.startsWith("1.") && spec.length() >= 3) {
-          // "1.8" -> "8"
-          try {
-            int minor = Integer.parseInt(spec.substring(2));
-            ver = Integer.toString(minor);
-          } catch (NumberFormatException nfe) {
-            ver = spec;
-          }
-        } else {
-          ver = spec;
-        }
-      }
-
-      javaVersion = ver;
+      javaVersion = detectJavaVersion();
       return javaVersion;
     }
+  }
+
+  /**
+   * JDK version detection using {@code Runtime.version()} via reflection
+   * (so the source still compiles on JDK 8).  Falls back to
+   * {@code java.specification.version} when {@code Runtime.version()} is
+   * not available — which on any supported runtime means JDK 8 or older.
+   */
+  private static String detectJavaVersion() {
+    // Try Runtime.version().feature() via reflection (JDK 9+).
+    try {
+      Runtime runtime = Runtime.getRuntime();
+      java.lang.reflect.Method versionMethod = Runtime.class.getMethod("version");
+      Object version = versionMethod.invoke(runtime);
+      if (version != null) {
+        java.lang.reflect.Method featureMethod =
+            version.getClass().getMethod("feature");
+        Object feature = featureMethod.invoke(version);
+        if (feature instanceof Integer) {
+          return feature.toString();
+        }
+      }
+    } catch (LinkageError | ReflectiveOperationException ignore) {
+      // Runtime.version() not available — fall through to the legacy path.
+    }
+
+    // Legacy path: parse java.specification.version (JDK 8 and earlier).
+    String spec = System.getProperty("java.specification.version", "");
+    if (spec.isEmpty()) {
+      return "unknown";
+    }
+    if (spec.startsWith("1.") && spec.length() >= 3) {
+      // "1.8" -> "8"; "1.7" -> "7"
+      try {
+        int minor = Integer.parseInt(spec.substring(2));
+        return Integer.toString(minor);
+      } catch (NumberFormatException nfe) {
+        return spec;
+      }
+    }
+    // Newer scheme (e.g. "17") — return as-is.
+    return spec;
   }
 }
