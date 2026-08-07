@@ -38,11 +38,11 @@ public class MacBinaryDecoderOutputStream extends FilterOutputStream {
     bytesFiltered++;
   }
 
-  public void write(byte b[]) throws IOException {
+  public void write(byte[] b) throws IOException {
     write(b, 0, b.length);
   }
 
-  public void write(byte b[], int off, int len) throws IOException {
+  public void write(byte[] b, int off, int len) throws IOException {
     // If the write is for content past the end of the data fork, ignore
     if (bytesFiltered >= (128 + dataForkLength)) {
       bytesFiltered += len;

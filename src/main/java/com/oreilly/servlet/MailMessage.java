@@ -81,8 +81,8 @@ public class MailMessage {
 
   String host;
   String from;
-  Vector to, cc;
-  Hashtable headers;
+  Vector<String> to, cc;
+  Hashtable<String, String> headers;
   MailPrintStream out;
   BufferedReader in;
   Socket socket;
@@ -106,9 +106,9 @@ public class MailMessage {
    */
   public MailMessage(String host) throws IOException {
     this.host = host;
-    to = new Vector();
-    cc = new Vector();
-    headers = new Hashtable();
+    to = new Vector<>();
+    cc = new Vector<>();
+    headers = new Hashtable<>();
     setHeader("X-Mailer", "com.oreilly.servlet.MailMessage (www.servlets.com)");
     connect();
     sendHelo();
@@ -205,9 +205,9 @@ public class MailMessage {
     }
   }
 
-  String vectorToList(Vector v) {
+  String vectorToList(Vector<String> v) {
     StringBuffer buf = new StringBuffer();
-    Enumeration e = v.elements();
+    Enumeration<String> e = v.elements();
     while (e.hasMoreElements()) {
       buf.append(e.nextElement());
       if (e.hasMoreElements()) {
@@ -219,10 +219,10 @@ public class MailMessage {
 
   void flushHeaders() throws IOException {
     // XXX Should I care about order here?
-    Enumeration e = headers.keys();
+    Enumeration<String> e = headers.keys();
     while (e.hasMoreElements()) {
-      String name = (String) e.nextElement();
-      String value = (String) headers.get(name);
+      String name = e.nextElement();
+      String value = headers.get(name);
       out.println(name + ": " + value);
     }
     out.println();

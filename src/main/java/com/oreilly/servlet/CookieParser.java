@@ -41,8 +41,8 @@ import java.util.Hashtable;
  */
 public class CookieParser {
 
-  private HttpServletRequest req;
-  private Hashtable cookieJar = new Hashtable();
+  private final HttpServletRequest req;
+  private final Hashtable<String, String> cookieJar = new Hashtable<>();
 
   /**
    * Constructs a new CookieParser to handle the cookies of the
@@ -76,7 +76,7 @@ public class CookieParser {
    */
   public String getStringCookie(String name)
       throws CookieNotFoundException {
-    String value = (String) cookieJar.get(name);
+    String value = cookieJar.get(name);
     if (value == null)
       throw new CookieNotFoundException(name + " not found");
     else
