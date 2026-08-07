@@ -403,6 +403,12 @@ class CacheHttpServletResponse implements HttpServletResponse {
   }
 
   @Override
+  public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {
+    delegate.sendRedirect(location, sc, clearBuffer);
+    didRedirect = true;
+  }
+
+  @Override
   public String encodeURL(String url) {
     return delegate.encodeURL(url);
   }
