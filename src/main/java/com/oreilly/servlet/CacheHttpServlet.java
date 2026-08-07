@@ -366,6 +366,19 @@ class CacheHttpServletResponse implements HttpServletResponse {
     status = sc;
   }
 
+  /**
+   * 兼容 Servlet 5 中保留的带原因短语状态设置方法。
+   *
+   * @param sc HTTP 状态码
+   * @param sm 原因短语
+   */
+  @Override
+  @SuppressWarnings("deprecation")
+  public void setStatus(int sc, String sm) {
+    delegate.setStatus(sc, sm);
+    status = sc;
+  }
+
   @Override
   public void setHeader(String name, String value) {
     delegate.setHeader(name, value);
