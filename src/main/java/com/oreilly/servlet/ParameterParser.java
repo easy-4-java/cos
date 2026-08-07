@@ -383,14 +383,14 @@ public class ParameterParser {
    * @return an array of missing parameters, or null if none are missing
    */
   public String[] getMissingParameters(String[] required) {
-    Vector missing = new Vector();
-    for (int i = 0; i < required.length; i++) {
-      String val = getStringParameter(required[i], null);
+    Vector<String> missing = new Vector<>();
+    for (String s : required) {
+      String val = getStringParameter(s, null);
       if (val == null) {
-        missing.addElement(required[i]);
+        missing.addElement(s);
       }
     }
-    if (missing.size() == 0) {
+    if (missing.isEmpty()) {
       return null;
     }
     else {
