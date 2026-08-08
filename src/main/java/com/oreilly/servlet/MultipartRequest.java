@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -44,6 +45,8 @@ import java.util.Vector;
  * 
  * @author Jason Hunter
  * @author Geoff Soutter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.12, 2004/04/11, added null check for Opera malformed bug<br>
  * @version 1.11, 2002/11/01, combine query string params in param list<br>
  * @version 1.10, 2002/05/27, added access to the original file names<br>
@@ -68,7 +71,7 @@ public class MultipartRequest {
 
   private static final long DEFAULT_MAX_POST_SIZE = 1024 * 1024;  // 1 Meg
 
-  protected Hashtable parameters = new Hashtable();  // name - Vector of values
+  protected Hashtable<String, Vector<String>> parameters = new Hashtable<>();  // name - Vector of values
   // protected Hashtable files = new Hashtable();       // name - UploadedFile
   protected FileMap files = new FileMap();       // name - UploadedFile
 
@@ -250,16 +253,13 @@ public class MultipartRequest {
     // Ben Johnson, ben.johnson@merrillcorp.com, for the idea.
     if (request.getQueryString() != null) {
       // Let HttpUtils create a name->String[] structure
-      Hashtable queryParameters = HttpUtils.parseQueryString(request.getQueryString());
+      Hashtable<String, String[]> queryParameters = HttpUtils.parseQueryString(request.getQueryString());
       // For our own use, name it a name->Vector structure
-      Enumeration queryParameterNames = queryParameters.keys();
+      Enumeration<String> queryParameterNames = queryParameters.keys();
       while (queryParameterNames.hasMoreElements()) {
-        Object paramName = queryParameterNames.nextElement();
-        String[] values = (String[])queryParameters.get(paramName);
-        Vector newValues = new Vector();
-        for (int i = 0; i < values.length; i++) {
-          newValues.add(values[i]);
-        }
+        String paramName = queryParameterNames.nextElement();
+        String[] values = queryParameters.get(paramName);
+        Vector<String> newValues = new Vector<>(Arrays.asList(values));
         parameters.put(paramName, newValues);
       }
     }
@@ -275,9 +275,9 @@ public class MultipartRequest {
         // It's a parameter part, add it to the vector of values
         ParamPart paramPart = (ParamPart) part;
         String value = paramPart.getStringValue();
-        Vector existingValues = (Vector)parameters.get(name);
+        Vector<String> existingValues = parameters.get(name);
         if (existingValues == null) {
-          existingValues = new Vector();
+          existingValues = new Vector<>();
           parameters.put(name, existingValues);
         }
         existingValues.addElement(value);
@@ -374,12 +374,11 @@ public class MultipartRequest {
    */
   public String getParameter(String name) {
     try {
-      Vector values = (Vector)parameters.get(name);
-      if (values == null || values.size() == 0) {
+      Vector<String> values = parameters.get(name);
+      if (values == null || values.isEmpty()) {
         return null;
       }
-      String value = (String)values.elementAt(values.size() - 1);
-      return value;
+      return values.elementAt(values.size() - 1);
     }
     catch (Exception e) {
       return null;
@@ -398,8 +397,8 @@ public class MultipartRequest {
    */
   public String[] getParameterValues(String name) {
     try {
-      Vector values = (Vector)parameters.get(name);
-      if (values == null || values.size() == 0) {
+      Vector<String> values = parameters.get(name);
+      if (values == null || values.isEmpty()) {
         return null;
       }
       String[] valuesArray = new String[values.size()];

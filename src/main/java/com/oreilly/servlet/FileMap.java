@@ -6,14 +6,17 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 /**
- * 装载文件的table
- * 
- * 上传文件时，使用相同name时只能获取到最后的一个。
- * 
- * 修改：当重复时，统一将key添加后缀`_N`如name_0
- * 
- * @author L.cm
+ * A map-like container for uploaded files that handles duplicate keys gracefully.
  *
+ * <p>When multiple files are uploaded with the same form field name, the
+ * standard behavior would keep only the last value. This class avoids
+ * collisions by appending an incremental suffix ({@code _0}, {@code _1}, &hellip;)
+ * to duplicate keys so that every uploaded file is retained.</p>
+ *
+ * @author L.cm
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see MultipartRequest
  */
 class FileMap {
 	

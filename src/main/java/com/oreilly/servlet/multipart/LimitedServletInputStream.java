@@ -18,6 +18,9 @@ import java.io.IOException;
  * 
  * @author Jason Hunter
  * @author Geoff Soutter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see BufferedServletInputStream
  * @version 1.0, 2000/10/27, initial revision
  */
 public class LimitedServletInputStream extends ServletInputStream {
@@ -53,7 +56,7 @@ public class LimitedServletInputStream extends ServletInputStream {
    *        read, or -1 if the end of the stream is reached.
    * @exception  IOException  if an I/O error occurs.
    */
-  public int readLine(byte b[], int off, int len) throws IOException {
+  public int readLine(byte[] b, int off, int len) throws IOException {
     int result;
     long left = totalExpected - totalRead;
     if (left <= 0L) {
@@ -98,7 +101,7 @@ public class LimitedServletInputStream extends ServletInputStream {
    *             the stream has been reached.
    * @exception  IOException  if an I/O error occurs.
    */
-  public int read( byte b[], int off, int len ) throws IOException {
+  public int read( byte[] b, int off, int len ) throws IOException {
     int result;
     long left = totalExpected - totalRead;
     if (left <= 0) {

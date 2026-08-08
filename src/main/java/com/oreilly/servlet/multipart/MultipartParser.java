@@ -47,6 +47,8 @@ import java.util.Vector;
  * 
  * @author Jason Hunter
  * @author Geoff Soutter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.13, 2004/09/01, added workaround if content-length is -1
  * @version 1.12, 2004/05/17, added trim on disposition
  * @version 1.11, 2002/11/01, added constructor that takes an encoding, to
@@ -248,7 +250,7 @@ public class MultipartParser {
     // Content-Disposition: form-data; name="field1"; filename="file1.txt"
     // Content-Type: type/subtype
     // Content-Transfer-Encoding: binary
-    Vector headers = new Vector();
+    Vector<String> headers = new Vector<>();
 
     String line = readLine();
     if (line == null) {
@@ -294,9 +296,9 @@ public class MultipartParser {
     String origname = null;
     String contentType = "text/plain";  // rfc1867 says this is the default
 
-    Enumeration enu = headers.elements();
+    Enumeration<String> enu = headers.elements();
     while (enu.hasMoreElements()) {
-      String headerline = (String) enu.nextElement();
+      String headerline = enu.nextElement();
       if (headerline.toLowerCase().startsWith("content-disposition:")) {
         // Parse the content-disposition line
         String[] dispInfo = extractDispositionInfo(headerline);
@@ -322,7 +324,7 @@ public class MultipartParser {
     }
     else {
       // This is a file
-      if (filename.equals("")) {
+      if (filename.isEmpty()) {
         filename = null; // empty filename, probably an "empty" file param
       }
       lastFilePart = new FilePart(name, in, boundary,
@@ -458,7 +460,7 @@ public class MultipartParser {
    * @exception IOException	if an input or output exception has occurred.
    */
   private String readLine() throws IOException {
-    StringBuffer sbuf = new StringBuffer();
+    StringBuilder sbuf = new StringBuilder();
     int result;
     String line;
 
@@ -469,7 +471,7 @@ public class MultipartParser {
       }
     } while (result == buf.length);  // loop only if the buffer was filled
 
-    if (sbuf.length() == 0) {
+    if (sbuf.isEmpty()) {
       return null;  // nothing read, must be at the end of stream
     }
 

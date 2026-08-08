@@ -54,6 +54,8 @@ import java.util.Vector;
  * @see com.oreilly.servlet.ParameterNotFoundException
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998, 1999
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.4, 2000/12/14, better checking the selected encoding is valid in 
  *                           setCharacterEncoding() thanks to Dewayne McNair
  * @version 1.3, 2000/05/17, added setCharacterEncoding()
@@ -383,14 +385,14 @@ public class ParameterParser {
    * @return an array of missing parameters, or null if none are missing
    */
   public String[] getMissingParameters(String[] required) {
-    Vector missing = new Vector();
-    for (int i = 0; i < required.length; i++) {
-      String val = getStringParameter(required[i], null);
+    Vector<String> missing = new Vector<>();
+    for (String s : required) {
+      String val = getStringParameter(s, null);
       if (val == null) {
-        missing.addElement(required[i]);
+        missing.addElement(s);
       }
     }
-    if (missing.size() == 0) {
+    if (missing.isEmpty()) {
       return null;
     }
     else {

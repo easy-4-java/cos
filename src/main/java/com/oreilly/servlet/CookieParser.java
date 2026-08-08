@@ -37,12 +37,14 @@ import java.util.Hashtable;
  * @see com.oreilly.servlet.CookieNotFoundException
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.0, 2000/03/19
  */
 public class CookieParser {
 
-  private HttpServletRequest req;
-  private Hashtable cookieJar = new Hashtable();
+  private final HttpServletRequest req;
+  private final Hashtable<String, String> cookieJar = new Hashtable<>();
 
   /**
    * Constructs a new CookieParser to handle the cookies of the
@@ -76,7 +78,7 @@ public class CookieParser {
    */
   public String getStringCookie(String name)
       throws CookieNotFoundException {
-    String value = (String) cookieJar.get(name);
+    String value = cookieJar.get(name);
     if (value == null)
       throw new CookieNotFoundException(name + " not found");
     else

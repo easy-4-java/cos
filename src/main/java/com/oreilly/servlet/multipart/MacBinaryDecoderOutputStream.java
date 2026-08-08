@@ -13,6 +13,9 @@ import java.io.OutputStream;
  * files on the fly; optimized for speed more than readability.
  * 
  * @author Jason Hunter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FilePart
  */
 public class MacBinaryDecoderOutputStream extends FilterOutputStream {
   private int bytesFiltered = 0;
@@ -38,11 +41,11 @@ public class MacBinaryDecoderOutputStream extends FilterOutputStream {
     bytesFiltered++;
   }
 
-  public void write(byte b[]) throws IOException {
+  public void write(byte[] b) throws IOException {
     write(b, 0, b.length);
   }
 
-  public void write(byte b[], int off, int len) throws IOException {
+  public void write(byte[] b, int off, int len) throws IOException {
     // If the write is for content past the end of the data fork, ignore
     if (bytesFiltered >= (128 + dataForkLength)) {
       bytesFiltered += len;
