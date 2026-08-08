@@ -26,8 +26,12 @@ public class StubServletContext implements ServletContext {
     @Override public RequestDispatcher getNamedDispatcher(String name) { return null; }
     @Override public void log(String msg) {}
     @Override public void log(String message, Throwable throwable) {}
+    @SuppressWarnings("deprecation") @Override public void log(Exception exception, String msg) {}
     @Override public String getRealPath(String path) { return null; }
     @Override public String getServerInfo() { return "test"; }
+    @SuppressWarnings("deprecation") @Override public Enumeration<String> getServletNames() { return Collections.emptyEnumeration(); }
+    @SuppressWarnings("deprecation") @Override public Enumeration<Servlet> getServlets() { return Collections.emptyEnumeration(); }
+    @SuppressWarnings("deprecation") @Override public Servlet getServlet(String name) throws ServletException { return null; }
     @Override public String getInitParameter(String name) { return null; }
     @Override public Enumeration<String> getInitParameterNames() { return Collections.emptyEnumeration(); }
     @Override public boolean setInitParameter(String name, String value) { return false; }

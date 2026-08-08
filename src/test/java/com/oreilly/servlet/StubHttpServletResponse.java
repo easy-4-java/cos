@@ -18,7 +18,9 @@ public class StubHttpServletResponse implements HttpServletResponse {
     @Override public void addCookie(Cookie cookie) {}
     @Override public boolean containsHeader(String name) { return false; }
     @Override public String encodeURL(String url) { return url; }
+    @SuppressWarnings("deprecation") @Override public String encodeUrl(String url) { return url; }
     @Override public String encodeRedirectURL(String url) { return url; }
+    @SuppressWarnings("deprecation") @Override public String encodeRedirectUrl(String url) { return url; }
     @Override public void sendError(int sc, String msg) throws IOException {}
     @Override public void sendError(int sc) throws IOException {}
     @Override public void sendRedirect(String location) throws IOException {}
@@ -29,6 +31,7 @@ public class StubHttpServletResponse implements HttpServletResponse {
     @Override public void setIntHeader(String name, int value) {}
     @Override public void addIntHeader(String name, int value) {}
     @Override public void setStatus(int sc) {}
+    @SuppressWarnings("deprecation") @Override public void setStatus(int sc, String sm) {}
     @Override public int getStatus() { return 200; }
     @Override public String getHeader(String name) { return null; }
     @Override public Collection<String> getHeaders(String name) { return Collections.emptyList(); }
@@ -55,5 +58,5 @@ public class StubHttpServletResponse implements HttpServletResponse {
     @Override public void resetBuffer() {}
     @Override public void setLocale(Locale loc) {}
     @Override public Locale getLocale() { return Locale.getDefault(); }
-    @Override public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {}
+    public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {}
 }

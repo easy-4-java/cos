@@ -39,6 +39,8 @@ public class StubHttpServletRequest implements HttpServletRequest {
     @Override public boolean isRequestedSessionIdValid() { return false; }
     @Override public boolean isRequestedSessionIdFromCookie() { return false; }
     @Override public boolean isRequestedSessionIdFromURL() { return false; }
+    @SuppressWarnings("deprecation") @Override public boolean isRequestedSessionIdFromUrl() { return false; }
+    @SuppressWarnings("deprecation") @Override public String getRealPath(String path) { return null; }
     @Override public boolean authenticate(HttpServletResponse response) throws IOException { return false; }
     @Override public void login(String username, String password) {}
     @Override public void logout() {}
@@ -81,7 +83,4 @@ public class StubHttpServletRequest implements HttpServletRequest {
     @Override public boolean isAsyncSupported() { return false; }
     @Override public AsyncContext getAsyncContext() { return null; }
     @Override public DispatcherType getDispatcherType() { return DispatcherType.REQUEST; }
-    @Override public String getRequestId() { return null; }
-    @Override public String getProtocolRequestId() { return null; }
-    @Override public ServletConnection getServletConnection() { return null; }
 }
