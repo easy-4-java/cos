@@ -22,6 +22,10 @@ import java.io.IOException;
  * 
  * @author Geoff Soutter
  * @author Jason Hunter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FilePart
+ * @see ParamPart
  * @version 1.4, 2002/11/01, fix for "unexpected end of part" caused by
  *                           boundary newlines split across buffers
  * @version 1.3, 2001/05/21, fix to handle boundaries crossing 64K mark

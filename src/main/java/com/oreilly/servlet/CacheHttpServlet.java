@@ -48,6 +48,9 @@ import java.util.*;
  * won't work.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1999
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see jakarta.servlet.http.HttpServlet
  * @version 0.93, 2004/06/25, added setCharacterEncoding() for servlets 2.4
  * @version 0.92, 2000/03/16, added synchronization blocks to make thread safe
  * @version 0.91, 1999/12/28, made support classes package protected

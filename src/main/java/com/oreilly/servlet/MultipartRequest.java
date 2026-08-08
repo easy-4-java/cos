@@ -45,6 +45,8 @@ import java.util.Vector;
  * 
  * @author Jason Hunter
  * @author Geoff Soutter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.12, 2004/04/11, added null check for Opera malformed bug<br>
  * @version 1.11, 2002/11/01, combine query string params in param list<br>
  * @version 1.10, 2002/05/27, added access to the original file names<br>

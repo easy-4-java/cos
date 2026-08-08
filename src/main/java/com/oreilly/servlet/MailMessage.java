@@ -71,6 +71,8 @@ import java.util.Vector;
  * &lt;/ul&gt;
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1999
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.4, 2003/01/06, made isResponseOK() better handle null responses
  * @version 1.3, 2002/12/13, added support for EBCDIC machines (needs J2SE 1.4)
  * @version 1.2, 2002/11/01, added logic to suppress CC: header if no CC addrs

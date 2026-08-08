@@ -13,6 +13,9 @@ import java.io.OutputStream;
  * files on the fly; optimized for speed more than readability.
  * 
  * @author Jason Hunter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FilePart
  */
 public class MacBinaryDecoderOutputStream extends FilterOutputStream {
   private int bytesFiltered = 0;
