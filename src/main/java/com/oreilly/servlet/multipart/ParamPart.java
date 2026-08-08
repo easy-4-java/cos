@@ -17,6 +17,10 @@ import java.io.UnsupportedEncodingException;
  * 
  * @author Geoff Soutter
  * @author Jason Hunter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see Part
+ * @see FilePart
  * @version 1.1, 2002/04/30, added better encoding support, thanks to
  *                           Changshin Lee
  * @version 1.0, 2000/10/27, initial revision

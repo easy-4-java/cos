@@ -17,6 +17,10 @@ import java.io.*;
  * have been passed by.
  * 
  * @author Geoff Soutter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see Part
+ * @see ParamPart
  * @version 1.2, 2001/01/22, getFilePath() addition thanks to Stefan Eissing
  * @version 1.1, 2000/11/26, writeTo() bug fix thanks to Mike Shivas
  * @version 1.0, 2000/10/27, initial revision

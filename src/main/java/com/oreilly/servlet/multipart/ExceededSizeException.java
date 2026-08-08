@@ -10,6 +10,8 @@ package com.oreilly.servlet.multipart;
  * @see com.oreilly.servlet.multipart.MultipartParser
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2007
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.0, 2007/04/11
  */
 public class ExceededSizeException extends RuntimeException {

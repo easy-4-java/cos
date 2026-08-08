@@ -18,6 +18,10 @@ import java.io.IOException;
  * the class usage.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2001
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see MultipartRequest
+ * @see MultipartWrapper
  * @version 1.0, 2001/06/19
  */
 public class MultipartFilter implements Filter {

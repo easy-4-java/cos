@@ -27,6 +27,9 @@ import java.io.IOException;
  * Apache JServ is known to suffer from this bug.
  * 
  * @author Geoff Soutter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see LimitedServletInputStream
  * @version 1.1, 2001/05/21, removed block of commented out code
  * @version 1.0, 2000/10/27, initial revision
  */
