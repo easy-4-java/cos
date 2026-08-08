@@ -10,6 +10,8 @@ package com.oreilly.servlet;
  * @see com.oreilly.servlet.ParameterParser
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.0, 98/09/18
  */
 public class ParameterNotFoundException extends Exception {

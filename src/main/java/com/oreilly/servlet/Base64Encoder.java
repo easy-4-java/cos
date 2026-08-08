@@ -24,6 +24,9 @@ import java.nio.charset.StandardCharsets;
  * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see Base64Decoder
  * @version 1.2, 2002/11/01, added encode(byte[]) method to better handle
  *                           binary data (thanks to Sean Graham)
  * @version 1.1, 2000/11/17, fixed bug with sign bit for char values
@@ -169,7 +172,7 @@ public class Base64Encoder extends FilterOutputStream {
       encodedOut.write(bytes);
       encodedOut.close();
 
-      return out.toString("8859_1");
+      return out.toString(StandardCharsets.ISO_8859_1);
     }
     catch (IOException ignored) { return null; }
   }

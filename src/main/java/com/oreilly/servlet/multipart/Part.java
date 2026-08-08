@@ -13,6 +13,8 @@ package com.oreilly.servlet.multipart;
  * @see ParamPart
  * 
  * @author Geoff Soutter
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
  * @version 1.0, 2000/10/27, initial revision
  */
 public abstract class Part {

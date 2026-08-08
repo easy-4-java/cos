@@ -5,6 +5,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+/**
+ * Utility class for common HTTP operations such as parsing query strings
+ * and reconstructing request URLs. This is a replacement for the deprecated
+ * {@code jakarta.servlet.http.HttpUtils} class.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see MultipartRequest
+ */
 public class HttpUtils {
 
 
