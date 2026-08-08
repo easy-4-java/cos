@@ -55,5 +55,5 @@ public class StubHttpServletResponse implements HttpServletResponse {
     @Override public void resetBuffer() {}
     @Override public void setLocale(Locale loc) {}
     @Override public Locale getLocale() { return Locale.getDefault(); }
-    @Override public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {}
+    public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {}
 }

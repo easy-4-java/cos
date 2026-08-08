@@ -87,7 +87,7 @@ public abstract class DaemonHttpServlet extends HttpServlet {
    */
   public void destroy() {
     try {
-      daemonThread.stop();
+      daemonThread.interrupt();
       daemonThread = null;
     }
     catch (Exception e) {

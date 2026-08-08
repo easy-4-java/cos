@@ -369,6 +369,11 @@ class CacheHttpServletResponse implements HttpServletResponse {
     status = sc;
   }
 
+  public void setStatus(int sc, String sm) {
+    delegate.setStatus(sc);
+    status = sc;
+  }
+
   @Override
   public void setHeader(String name, String value) {
     delegate.setHeader(name, value);
@@ -405,9 +410,9 @@ class CacheHttpServletResponse implements HttpServletResponse {
     didRedirect = true;
   }
 
-  @Override
   public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {
-    delegate.sendRedirect(location, sc, clearBuffer);
+    delegate.setStatus(sc);
+    delegate.sendRedirect(location);
     didRedirect = true;
   }
 
