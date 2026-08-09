@@ -172,7 +172,7 @@ public class Base64Encoder extends FilterOutputStream {
       encodedOut.write(bytes);
       encodedOut.close();
 
-      return out.toString(StandardCharsets.ISO_8859_1);
+      return out.toString("ISO-8859-1");
     }
     catch (IOException ignored) { return null; }
   }

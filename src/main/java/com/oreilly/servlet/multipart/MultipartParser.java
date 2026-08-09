@@ -471,7 +471,7 @@ public class MultipartParser {
       }
     } while (result == buf.length);  // loop only if the buffer was filled
 
-    if (sbuf.isEmpty()) {
+    if (sbuf.length() == 0) {
       return null;  // nothing read, must be at the end of stream
     }
 
