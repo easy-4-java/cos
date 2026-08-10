@@ -38,7 +38,7 @@ import java.util.Properties;
  * by Rod McChesney of JavaSoft.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see HttpsMessage
  * @version 1.3, 2000/10/24, fixed headers NPE bug

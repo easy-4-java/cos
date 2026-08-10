@@ -54,7 +54,7 @@ import java.util.Vector;
  * @see com.oreilly.servlet.ParameterNotFoundException
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998, 1999
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.4, 2000/12/14, better checking the selected encoding is valid in 
  *                           setCharacterEncoding() thanks to Dewayne McNair

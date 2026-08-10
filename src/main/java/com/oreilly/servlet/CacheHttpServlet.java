@@ -48,7 +48,7 @@ import java.util.*;
  * won't work.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1999
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see jakarta.servlet.http.HttpServlet
  * @version 0.93, 2004/06/25, added setCharacterEncoding() for servlets 2.4

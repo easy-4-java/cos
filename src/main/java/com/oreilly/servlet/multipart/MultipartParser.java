@@ -47,7 +47,7 @@ import java.util.Vector;
  * 
  * @author Jason Hunter
  * @author Geoff Soutter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.13, 2004/09/01, added workaround if content-length is -1
  * @version 1.12, 2004/05/17, added trim on disposition

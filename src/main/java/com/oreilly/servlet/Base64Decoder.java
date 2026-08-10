@@ -23,7 +23,7 @@ import java.util.Objects;
  * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see Base64Encoder
  * @version 1.1, 2002/11/01, added decodeToBytes() to better handle binary

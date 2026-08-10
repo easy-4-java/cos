@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
  * &lt;/pre&gt;&lt;/blockquote&gt;
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see Base64Decoder
  * @version 1.2, 2002/11/01, added encode(byte[]) method to better handle

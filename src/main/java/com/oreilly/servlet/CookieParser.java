@@ -37,7 +37,7 @@ import java.util.Hashtable;
  * @see com.oreilly.servlet.CookieNotFoundException
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.0, 2000/03/19
  */

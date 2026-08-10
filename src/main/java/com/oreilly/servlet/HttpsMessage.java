@@ -77,7 +77,7 @@ import java.security.Security;
  * &lt;p&gt;
  * @author &lt;b&gt;Matt Towers&lt;/b&gt;
  * @author Copyright &#169; 2000
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see HttpMessage
  * @version 1.0, 2000/05/05
