@@ -2,12 +2,12 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.github.hiwepy</groupId>
+	<groupId>io.github.easy4j</groupId>
 	<artifactId>cos</artifactId>
 	<packaging>jar</packaging>
 	<name>Cos</name>
 	<version>6.0.x.20241003.RELEASE</version>
-	<url>https://gitee.com/hiwepy/cos</url>
+	<url>https://github.com/easy-4-java/${project.artifactId}</url>
 	<description>Cos</description>
 
 	<issueManagement>
@@ -36,9 +36,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git:git@gitee.com:hiwepy/cos.git</connection>
-		<developerConnection>scm:git:git@gitee.com:hiwepy/cos.git</developerConnection>
-		<url>git@gitee.com:hiwepy/cos.git</url>
+		<connection>scm:git:https://github.com/easy-4-java/${project.artifactId}.git</connection>
+		<developerConnection>scm:git:https://github.com/easy-4-java/${project.artifactId}.git</developerConnection>
+		<url>https://github.com/easy-4-java/${project.artifactId}</url>
 	</scm>
 
 	<distributionManagement>
