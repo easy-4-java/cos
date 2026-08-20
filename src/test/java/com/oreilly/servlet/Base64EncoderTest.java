@@ -2,6 +2,7 @@ package com.oreilly.servlet;
 
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -91,6 +92,52 @@ public class Base64EncoderTest {
         String encoded = Base64Encoder.encode(original);
         String decoded = Base64Decoder.decode(encoded);
         assertEquals(original, decoded);
+    }
+
+    @Test
+    public void shouldRoundTripLargeStreamAcrossChunkBoundaries() throws IOException {
+        // 1MB of random bytes exercises many 57-byte encoder lines and
+        // 8KB decoder chunks; guards against chunk-boundary data loss
+        byte[] data = new byte[1024 * 1024];
+        new java.util.Random(42).nextBytes(data);
+
+        ByteArrayOutputStream enc = new ByteArrayOutputStream();
+        Base64Encoder encoder = new Base64Encoder(enc);
+        encoder.write(data, 0, data.length);
+        encoder.close();
+
+        Base64Decoder decoder = new Base64Decoder(new ByteArrayInputStream(enc.toByteArray()));
+        byte[] buf = new byte[8192];
+        ByteArrayOutputStream dec = new ByteArrayOutputStream();
+        int n;
+        while ((n = decoder.read(buf)) != -1) {
+            dec.write(buf, 0, n);
+        }
+        assertArrayEquals(data, dec.toByteArray());
+    }
+
+    @Test
+    public void shouldRoundTripSizesAroundChunkBoundaries() throws IOException {
+        // Sizes straddling the 4096-byte scan buffer and 8192-byte chunk
+        int[] sizes = {1, 56, 57, 58, 4095, 4096, 4097, 8191, 8192, 8193, 16385, 100000};
+        for (int size : sizes) {
+            byte[] data = new byte[size];
+            new java.util.Random(size).nextBytes(data);
+
+            ByteArrayOutputStream enc = new ByteArrayOutputStream();
+            Base64Encoder encoder = new Base64Encoder(enc);
+            encoder.write(data, 0, data.length);
+            encoder.close();
+
+            Base64Decoder decoder = new Base64Decoder(new ByteArrayInputStream(enc.toByteArray()));
+            byte[] buf = new byte[1024];
+            ByteArrayOutputStream dec = new ByteArrayOutputStream();
+            int n;
+            while ((n = decoder.read(buf)) != -1) {
+                dec.write(buf, 0, n);
+            }
+            assertArrayEquals("size=" + size, data, dec.toByteArray());
+        }
     }
 
     @Test
