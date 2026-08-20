@@ -298,7 +298,7 @@
                         <skip>false</skip>
                         <skipTests>false</skipTests>
                         <argLine>-Xmx1024m
-							-Dfile.encoding=UTF-8</argLine>
+                            -Dfile.encoding=UTF-8 ${argLine}</argLine>
                         <additionalClasspathElements>
                             <additionalClasspathElement>${basedir}/target/test-classes</additionalClasspathElement>
                         </additionalClasspathElements>
@@ -398,7 +398,7 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <haltOnFailure>false</haltOnFailure>
+                            <haltOnFailure>true</haltOnFailure>
                             <rules>
                                 <rule>
                                     <element>BUNDLE</element>
@@ -406,7 +406,8 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.90</minimum>
+                                            <!-- Lower bound based on current measured coverage (~59%); fails build on regression -->
+                                            <minimum>0.55</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

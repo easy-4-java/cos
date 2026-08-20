@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-[![Java](https://img.shields.io/badge/Java-21-orange)](https://github.com/easy-4-java/cos) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
+[![Java](https://img.shields.io/badge/Java-17-orange)](https://github.com/easy-4-java/cos) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 > The classic O'Reilly COS (com.oreilly.servlet) utility library — file upload,
 > HTTP messaging and servlet helpers — maintained for the Jakarta EE Servlet API.
@@ -68,21 +68,22 @@ Typical scenarios:
 
 | Requirement | Version / Notes |
 | :--- | :--- |
-| JDK | 21+ (see version matrix below) |
+| JDK | 17+ (see version matrix below) |
 | Maven | 3.0+ (enforced) |
 | Servlet API | Jakarta EE 9+ (`jakarta.servlet-api`, `provided` scope — supplied by your container) |
 
-Version lines (this project follows the upstream COS version line `6.0.x.*`):
+Version lines (this project follows the easy4j versioning scheme, one line per
+JDK baseline):
 
 | Branch | JDK | Version |
 | :--- | :--- | :--- |
-| `feature/1.0.x` | 11 | `6.0.x.*` |
-| `feature/2.0.x` | 17 | `6.0.x.*` |
-| `feature/3.0.x` | 21 | `6.0.x.*` |
+| `feature/1.0.x` | 1.8 | `1.0.x.*` |
+| `feature/2.0.x` | 17 | `2.0.x.*` |
+| `feature/3.0.x` | 21 | `3.0.x.*` |
 
-> Unlike the other easy4j components, `cos` keeps the upstream-aligned `6.0.x.*`
-> version line on every branch (verified in the branch poms); only the JDK baseline
-> differs per branch.
+> Each branch adapts the third-party component versions, Maven dependency
+> configuration and Java syntax to its JDK baseline (verified in the branch
+> poms).
 
 ## 4. Architecture & Modules
 
@@ -128,14 +129,14 @@ Maven:
 <dependency>
     <groupId>io.github.easy4j</groupId>
     <artifactId>cos</artifactId>
-    <version>6.0.x.20241003.RELEASE</version>
+    <version>2.0.x.20241003.RELEASE</version>
 </dependency>
 ```
 
 Gradle:
 
 ```groovy
-implementation 'io.github.easy4j:cos:6.0.x.20241003.RELEASE'
+implementation 'io.github.easy4j:cos:2.0.x.20241003.RELEASE'
 ```
 
 ## 6. Quick Start
@@ -225,8 +226,10 @@ InputStream in = msg.sendPostMessage();  // or sendGetMessage()
 mvn clean verify
 ```
 
-- The build is configured with the JaCoCo Maven plugin (report + `check` goal with a
-  90% line-coverage rule bound to the `verify` phase; `haltOnFailure=false`).
+- The build is configured with the JaCoCo Maven plugin (report + `check` goal bound
+  to the `verify` phase). The line-coverage floor is set to 55% (the current
+  measured coverage is ~59%) and `haltOnFailure=true`, so coverage regressions fail
+  the build.
 - **Assumption**: the 1.0.x branch currently checks in no test sources under
   `src/test`; coverage thresholds are therefore enforced only when tests exist.
 - No CI workflow files are present under `.github/` in this worktree.
@@ -236,15 +239,13 @@ mvn clean verify
 
 | Branch | JDK | Version | Notes |
 | :--- | :--- | :--- | :--- |
-| `feature/1.0.x` | 11 | `6.0.x.*` | Current branch, maintained |
-| `feature/2.0.x` | 17 | `6.0.x.*` | JDK 17 line |
-| `feature/3.0.x` | 21 | `6.0.x.*` | JDK 21 line |
+| `feature/1.0.x` | 1.8 | `1.0.x.*` | JDK 1.8 line |
+| `feature/2.0.x` | 17 | `2.0.x.*` | JDK 17 line |
+| `feature/3.0.x` | 21 | `3.0.x.*` | JDK 21 line |
 
-This component keeps the upstream COS version line (`6.0.x.*`) instead of the
-`1.0.x.*` / `2.0.x.*` / `3.0.x.*` scheme used by the other easy4j components; the
-JDK baseline is the only thing that changes per branch. Releases are published to
-the Aliyun Maven repository and as GitHub Releases; the project is not yet
-published to Maven Central.
+Each branch follows the easy4j version line matching its JDK baseline (verified in
+the branch poms). Releases are published to the Aliyun Maven repository and as
+GitHub Releases; the project is not yet published to Maven Central.
 
 ## 11. Contributing & License
 
