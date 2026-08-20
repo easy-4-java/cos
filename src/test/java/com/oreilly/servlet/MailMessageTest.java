@@ -1,9 +1,23 @@
 package com.oreilly.servlet;
 
 import org.junit.Test;
+
+import java.lang.reflect.Field;
+
 import static org.junit.Assert.*;
 
 public class MailMessageTest {
+
+    /**
+     * Allocates a MailMessage without running its constructor, which would
+     * open a real SMTP connection to the mail host.
+     */
+    private static MailMessage mailMessageWithoutConstructor() throws Exception {
+        Field f = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+        f.setAccessible(true);
+        sun.misc.Unsafe unsafe = (sun.misc.Unsafe) f.get(null);
+        return (MailMessage) unsafe.allocateInstance(MailMessage.class);
+    }
 
     @Test
     public void shouldSanitizeSimpleAddress() {
@@ -47,5 +61,37 @@ public class MailMessageTest {
     public void shouldHandleEmptyAddress() {
         String result = MailMessage.sanitizeAddress("");
         assertEquals("", result);
+    }
+
+    @Test
+    public void shouldAcceptMatchingResponseCode() throws Exception {
+        MailMessage msg = mailMessageWithoutConstructor();
+        assertTrue(msg.isResponseOK("250 OK", new int[]{250}));
+    }
+
+    @Test
+    public void shouldRejectNonMatchingResponseCode() throws Exception {
+        MailMessage msg = mailMessageWithoutConstructor();
+        assertFalse(msg.isResponseOK("550 Requested action not taken", new int[]{250}));
+    }
+
+    @Test
+    public void shouldRejectNullResponse() throws Exception {
+        MailMessage msg = mailMessageWithoutConstructor();
+        assertFalse(msg.isResponseOK(null, new int[]{250}));
+    }
+
+    @Test
+    public void shouldAcceptAnyOfMultipleCodes() throws Exception {
+        MailMessage msg = mailMessageWithoutConstructor();
+        assertTrue(msg.isResponseOK("354 Start mail input", new int[]{250, 354}));
+        assertFalse(msg.isResponseOK("500 Syntax error", new int[]{250, 354}));
+    }
+
+    @Test
+    public void shouldMatchByPrefix() throws Exception {
+        MailMessage msg = mailMessageWithoutConstructor();
+        // The classic implementation matches by numeric prefix
+        assertTrue(msg.isResponseOK("2500 extended code", new int[]{250}));
     }
 }
