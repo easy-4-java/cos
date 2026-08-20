@@ -1,8 +1,8 @@
 package com.oreilly.servlet;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Test;
 
 import java.io.File;
@@ -22,7 +22,7 @@ public class MultipartFilterTest {
             @Override public ServletContext getServletContext() {
                 return new StubServletContext() {
                     @Override public Object getAttribute(String name) {
-                        if ("jakarta.servlet.context.tempdir".equals(name)) {
+                        if ("javax.servlet.context.tempdir".equals(name)) {
                             return new File(System.getProperty("java.io.tmpdir"));
                         }
                         return null;
@@ -63,7 +63,7 @@ public class MultipartFilterTest {
             @Override public ServletContext getServletContext() {
                 return new StubServletContext() {
                     @Override public Object getAttribute(String name) {
-                        if ("jakarta.servlet.context.tempdir".equals(name)) return tempDir;
+                        if ("javax.servlet.context.tempdir".equals(name)) return tempDir;
                         return null;
                     }
                 };
@@ -142,7 +142,7 @@ public class MultipartFilterTest {
             @Override public ServletContext getServletContext() {
                 return new StubServletContext() {
                     @Override public Object getAttribute(String name) {
-                        if ("jakarta.servlet.context.tempdir".equals(name)) return tempDir;
+                        if ("javax.servlet.context.tempdir".equals(name)) return tempDir;
                         return null;
                     }
                 };

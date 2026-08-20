@@ -1,6 +1,6 @@
 package com.oreilly.servlet;
 
-import jakarta.servlet.*;
+import javax.servlet.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +39,7 @@ public class StubServletRequest implements ServletRequest {
     @Override public int getRemotePort() { return 12345; }
     @Override public String getLocalName() { return "localhost"; }
     @Override public String getLocalAddr() { return "127.0.0.1"; }
+    @Override public String getRealPath(String path) { return null; }
     @Override public int getLocalPort() { return 80; }
     @Override public ServletContext getServletContext() { return null; }
     @Override public AsyncContext startAsync() throws IllegalStateException { return null; }
@@ -46,6 +47,4 @@ public class StubServletRequest implements ServletRequest {
     @Override public boolean isAsyncStarted() { return false; }
     @Override public boolean isAsyncSupported() { return false; }
     @Override public AsyncContext getAsyncContext() { return null; }
-    @Override public DispatcherType getDispatcherType() { return DispatcherType.REQUEST; }
-    @SuppressWarnings("deprecation") @Override public String getRealPath(String path) { return null; }
-}
+    @Override public DispatcherType getDispatcherType() { return DispatcherType.REQUEST; }}

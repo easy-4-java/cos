@@ -1,7 +1,7 @@
 package com.oreilly.servlet;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import java.util.Collection;
  */
 public class StubHttpServletRequest implements HttpServletRequest {
     @Override public String getAuthType() { return null; }
+    @Override public String getRealPath(String path) { return null; }
     @Override public Cookie[] getCookies() { return new Cookie[0]; }
     @Override public long getDateHeader(String name) { return -1; }
     @Override public String getHeader(String name) { return null; }
@@ -39,8 +40,7 @@ public class StubHttpServletRequest implements HttpServletRequest {
     @Override public boolean isRequestedSessionIdValid() { return false; }
     @Override public boolean isRequestedSessionIdFromCookie() { return false; }
     @Override public boolean isRequestedSessionIdFromURL() { return false; }
-    @SuppressWarnings("deprecation") @Override public boolean isRequestedSessionIdFromUrl() { return false; }
-    @SuppressWarnings("deprecation") @Override public String getRealPath(String path) { return null; }
+    @Override public boolean isRequestedSessionIdFromUrl() { return false; }
     @Override public boolean authenticate(HttpServletResponse response) throws IOException { return false; }
     @Override public void login(String username, String password) {}
     @Override public void logout() {}

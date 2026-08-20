@@ -1,7 +1,7 @@
 package com.oreilly.servlet;
 
-import jakarta.servlet.*;
-import jakarta.servlet.descriptor.JspConfigDescriptor;
+import javax.servlet.*;
+import javax.servlet.descriptor.JspConfigDescriptor;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -13,6 +13,9 @@ import java.util.*;
  */
 public class StubServletContext implements ServletContext {
     @Override public String getContextPath() { return ""; }
+    @Override public javax.servlet.Servlet getServlet(String name) { return null; }
+    @Override public java.util.Enumeration<javax.servlet.Servlet> getServlets() { return java.util.Collections.emptyEnumeration(); }
+    @Override public java.util.Enumeration<String> getServletNames() { return java.util.Collections.emptyEnumeration(); }
     @Override public ServletContext getContext(String uripath) { return null; }
     @Override public int getMajorVersion() { return 6; }
     @Override public int getMinorVersion() { return 1; }
@@ -25,13 +28,10 @@ public class StubServletContext implements ServletContext {
     @Override public RequestDispatcher getRequestDispatcher(String path) { return null; }
     @Override public RequestDispatcher getNamedDispatcher(String name) { return null; }
     @Override public void log(String msg) {}
+    @Override public void log(Exception exception, String msg) {}
     @Override public void log(String message, Throwable throwable) {}
-    @SuppressWarnings("deprecation") @Override public void log(Exception exception, String msg) {}
     @Override public String getRealPath(String path) { return null; }
     @Override public String getServerInfo() { return "test"; }
-    @SuppressWarnings("deprecation") @Override public Enumeration<String> getServletNames() { return Collections.emptyEnumeration(); }
-    @SuppressWarnings("deprecation") @Override public Enumeration<Servlet> getServlets() { return Collections.emptyEnumeration(); }
-    @SuppressWarnings("deprecation") @Override public Servlet getServlet(String name) throws ServletException { return null; }
     @Override public String getInitParameter(String name) { return null; }
     @Override public Enumeration<String> getInitParameterNames() { return Collections.emptyEnumeration(); }
     @Override public boolean setInitParameter(String name, String value) { return false; }

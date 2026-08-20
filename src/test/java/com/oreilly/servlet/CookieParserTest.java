@@ -1,7 +1,7 @@
 package com.oreilly.servlet;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
 import java.util.*;

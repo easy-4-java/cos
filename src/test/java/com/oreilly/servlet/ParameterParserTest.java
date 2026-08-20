@@ -1,6 +1,6 @@
 package com.oreilly.servlet;
 
-import jakarta.servlet.ServletRequest;
+import javax.servlet.ServletRequest;
 import org.junit.Test;
 
 import java.util.*;
