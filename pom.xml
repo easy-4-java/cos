@@ -41,12 +41,14 @@
     <properties>
         <!-- ═══ 第一段: 基础属性（自然排序）═══ -->
         <java.version>1.8</java.version>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <!-- JDK 8 javac (1.8.0_502) does not support the release flag; use source/target 1.8 -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <maven.version>3.9.16</maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Dependency versions -->
         <additionalparam>-Xdoclint:none</additionalparam>
-        <jakarta-servlet.version>5.0.0</jakarta-servlet.version>
+        <javax-servlet.version>4.0.1</javax-servlet.version>
         <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <junit.version>4.13.2</junit.version>
         <junit-jupiter.version>5.11.4</junit-jupiter.version>
@@ -107,9 +109,9 @@
             </dependency>
             <!-- For Servlet Api -->
             <dependency>
-                <groupId>jakarta.servlet</groupId>
-                <artifactId>jakarta.servlet-api</artifactId>
-                <version>${jakarta-servlet.version}</version>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${javax-servlet.version}</version>
             </dependency>
             <!-- For Validation Api -->
             <dependency>
@@ -141,8 +143,8 @@
         </dependency>
         <!-- For Servlet Api -->
         <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
