@@ -18,7 +18,7 @@ import java.io.IOException;
  * the class usage.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2001
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see MultipartRequest
  * @see MultipartWrapper

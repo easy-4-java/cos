@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
  * and reconstructing request URLs. This is a replacement for the deprecated
  * {@code jakarta.servlet.http.HttpUtils} class.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see MultipartRequest
  */

@@ -22,7 +22,7 @@ import java.util.Vector;
  * Some methods require Servlet API 2.2.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998-2000
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see MultipartResponse
  * @version 1.5, 2001/02/11, added getResource() ".." check

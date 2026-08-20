@@ -7,9 +7,10 @@ package com.oreilly.servlet;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 
  * A class to help send SMTP email.  It can be used by any Java program, not
@@ -71,7 +72,7 @@ import java.util.Vector;
  * &lt;/ul&gt;
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1999
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.4, 2003/01/06, made isResponseOK() better handle null responses
  * @version 1.3, 2002/12/13, added support for EBCDIC machines (needs J2SE 1.4)
@@ -83,8 +84,8 @@ public class MailMessage {
 
   String host;
   String from;
-  Vector<String> to, cc;
-  Hashtable<String, String> headers;
+  List<String> to, cc;
+  Map<String, String> headers;
   MailPrintStream out;
   BufferedReader in;
   Socket socket;
@@ -108,9 +109,9 @@ public class MailMessage {
    */
   public MailMessage(String host) throws IOException {
     this.host = host;
-    to = new Vector<>();
-    cc = new Vector<>();
-    headers = new Hashtable<>();
+    to = new ArrayList<>();
+    cc = new ArrayList<>();
+    headers = new HashMap<>();
     setHeader("X-Mailer", "com.oreilly.servlet.MailMessage (www.servlets.com)");
     connect();
     sendHelo();
@@ -135,7 +136,7 @@ public class MailMessage {
    */
   public void to(String to) throws IOException {
     sendRcpt(to);
-    this.to.addElement(to);
+    this.to.add(to);
   }
 
   /**
@@ -146,7 +147,7 @@ public class MailMessage {
    */
   public void cc(String cc) throws IOException {
     sendRcpt(cc);
-    this.cc.addElement(cc);
+    this.cc.add(cc);
   }
 
   /**
@@ -207,25 +208,21 @@ public class MailMessage {
     }
   }
 
-  String vectorToList(Vector<String> v) {
-    StringBuffer buf = new StringBuffer();
-    Enumeration<String> e = v.elements();
-    while (e.hasMoreElements()) {
-      buf.append(e.nextElement());
-      if (e.hasMoreElements()) {
+  String vectorToList(List<String> v) {
+    StringBuilder buf = new StringBuilder();
+    for (int i = 0; i < v.size(); i++) {
+      if (i > 0) {
         buf.append(", ");
       }
+      buf.append(v.get(i));
     }
     return buf.toString();
   }
 
   void flushHeaders() throws IOException {
     // XXX Should I care about order here?
-    Enumeration<String> e = headers.keys();
-    while (e.hasMoreElements()) {
-      String name = e.nextElement();
-      String value = headers.get(name);
-      out.println(name + ": " + value);
+    for (Map.Entry<String, String> entry : headers.entrySet()) {
+      out.println(entry.getKey() + ": " + entry.getValue());
     }
     out.println();
     out.flush();

@@ -6,6 +6,7 @@ package com.oreilly.servlet;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Objects;
 
 /** 
@@ -32,26 +33,22 @@ import java.util.Objects;
  */
 public class Base64Decoder extends FilterInputStream {
 
-  private static final char[] chars = {
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-    'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
-    'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-    'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
-    'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
-    '8', '9', '+', '/'
-  };
+  // Decode in bounded chunks so streaming large inputs stays O(1) in memory.
+  // Chunk size is a multiple of four so chunk boundaries never split a
+  // 4-character group; the final chunk (at EOF or padding) is padded.
+  private static final int CHUNK_SIZE = 8 * 1024;
 
-  // A mapping between char values and six-bit integers
-  private static final int[] ints = new int[128];
-  static {
-    for (int i = 0; i < 64; i++) {
-      ints[chars[i]] = i;
-    }
-  }
-
-  private int charCount;
-  private int carryOver;
+  // State of the current decoding pass
+  private static final Base64.Decoder DECODER = Base64.getDecoder();
+  private final byte[] cleaned = new byte[CHUNK_SIZE];
+  private final byte[] chunk = new byte[4096];
+  private int chunkPos;
+  private int chunkLen;
+  private int cleanedCount;
+  private byte[] decodedBuf = new byte[0];
+  private int decodedPos;
+  private int decodedLen;
+  private boolean paddingSeen;
 
   /**
    * Constructs a new Base64 decoder that reads input from the given
@@ -72,51 +69,12 @@ public class Base64Decoder extends FilterInputStream {
    * @exception IOException if an I/O error occurs
    */
   public int read() throws IOException {
-    // Read the next non-whitespace character
-    int x;
-    do {
-      x = in.read();
-      if (x == -1) {
+    if (decodedPos >= decodedLen) {
+      if (!fillDecoded()) {
         return -1;
       }
-    } while (Character.isWhitespace((char)x));
-    charCount++;
-
-    // The '=' sign is just padding
-    if (x == '=') {
-      return -1;  // effective end of stream
     }
-
-    // Convert from raw form to 6-bit form
-    x = ints[x];
-
-    // Calculate which character we're decoding now
-    int mode = (charCount - 1) % 4;
-
-    // First char save all six bits, go for another
-    if (mode == 0) {
-      carryOver = x & 63;
-      return read();
-    }
-    // Second char use previous six bits and first two new bits,
-    // save last four bits
-    else if (mode == 1) {
-      int decoded = ((carryOver << 2) + (x >> 4)) & 255;
-      carryOver = x & 15;
-      return decoded;
-    }
-    // Third char use previous four bits and first four new bits,
-    // save last two bits
-    else if (mode == 2) {
-      int decoded = ((carryOver << 4) + (x >> 2)) & 255;
-      carryOver = x & 3;
-      return decoded;
-    }
-    // Fourth char use previous two bits and all six new bits
-    else if (mode == 3) {
-        return ((carryOver << 6) + x) & 255;
-    }
-    return -1;  // can't actually reach this line
+    return decodedBuf[decodedPos++] & 0xFF;
   }
 
   /**
@@ -152,6 +110,65 @@ public class Base64Decoder extends FilterInputStream {
     return i;
   }
 
+  // Read the next chunk of encoded input, skipping whitespace and stopping
+  // at the '=' padding or end of stream, then decode it into decodedBuf.
+  // Returns false when no further decoded bytes can be produced.
+  private boolean fillDecoded() throws IOException {
+    if (paddingSeen) {
+      return false;
+    }
+    cleanedCount = 0;
+    while (cleanedCount < CHUNK_SIZE) {
+      // Refill the scan buffer, preserving any unprocessed tail from the
+      // previous fillDecoded() call via chunkPos/chunkLen
+      if (chunkPos >= chunkLen) {
+        chunkLen = in.read(chunk, 0, chunk.length);
+        chunkPos = 0;
+        if (chunkLen == -1) {
+          break;
+        }
+      }
+      for (; chunkPos < chunkLen && cleanedCount < CHUNK_SIZE; chunkPos++) {
+        int x = chunk[chunkPos] & 0xFF;
+        // Fast path for the whitespace that actually occurs in Base64
+        // input, falling back to the full Unicode check for the rest
+        if (x == ' ' || x == '\n' || x == '\r' || x == '\t' || x == '\f'
+            || Character.isWhitespace((char) x)) {
+          continue;
+        }
+        if (x == '=') {
+          paddingSeen = true;
+          break;
+        }
+        cleaned[cleanedCount++] = (byte) x;
+      }
+      if (paddingSeen) {
+        break;
+      }
+    }
+    if (cleanedCount == 0) {
+      return false;
+    }
+    try {
+      // Pad up to a multiple of four so the JDK decoder accepts partial
+      // final groups (2 chars -> 1 byte, 3 chars -> 2 bytes)
+      int padding = (4 - cleanedCount % 4) % 4;
+      byte[] padded = new byte[cleanedCount + padding];
+      System.arraycopy(cleaned, 0, padded, 0, cleanedCount);
+      for (int i = cleanedCount; i < padded.length; i++) {
+        padded[i] = '=';
+      }
+      decodedBuf = DECODER.decode(padded);
+      decodedLen = decodedBuf.length;
+      decodedPos = 0;
+      return true;
+    }
+    catch (IllegalArgumentException e) {
+      // Malformed input: behave as end of stream, like the classic decoder
+      return false;
+    }
+  }
+
   /**
    * Returns the decoded form of the given encoded string, as a String.
    * Note that not all binary data can be represented as a String, so this
@@ -162,7 +179,8 @@ public class Base64Decoder extends FilterInputStream {
    * @return the decoded form of the encoded string
    */
   public static String decode(String encoded) {
-    return new String(Objects.requireNonNull(decodeToBytes(encoded)));
+    return new String(Objects.requireNonNull(decodeToBytes(encoded)),
+        StandardCharsets.ISO_8859_1);
   }
 
   /**
@@ -175,23 +193,40 @@ public class Base64Decoder extends FilterInputStream {
     byte[] bytes = null;
       bytes = encoded.getBytes(StandardCharsets.ISO_8859_1);
 
-      Base64Decoder in = new Base64Decoder(
-                       new ByteArrayInputStream(bytes));
-    
-    ByteArrayOutputStream out = 
-      new ByteArrayOutputStream((int) (bytes.length * 0.67));
-
-    try {
-      byte[] buf = new byte[4 * 1024];  // 4K buffer
-      int bytesRead;
-      while ((bytesRead = in.read(buf)) != -1) {
-        out.write(buf, 0, bytesRead);
+    // Skip whitespace, stop at the first '=' padding (matching the
+    // stream-based behaviour of the classic decoder)
+    ByteArrayOutputStream cleaned = new ByteArrayOutputStream(bytes.length);
+    boolean padded = false;
+    for (byte b : bytes) {
+      if (padded) {
+        break;
       }
-      out.close();
-
-      return out.toByteArray();
+      if (Character.isWhitespace((char) b)) {
+        continue;
+      }
+      if (b == '=') {
+        padded = true;
+        break;
+      }
+      cleaned.write(b);
     }
-    catch (IOException ignored) { return null; }
+    byte[] cleanedBytes = cleaned.toByteArray();
+    if (cleanedBytes.length == 0) {
+      return new byte[0];
+    }
+    int padding = (4 - cleanedBytes.length % 4) % 4;
+    byte[] paddedBytes = cleanedBytes;
+    if (padding > 0) {
+      paddedBytes = new byte[cleanedBytes.length + padding];
+      System.arraycopy(cleanedBytes, 0, paddedBytes, 0, cleanedBytes.length);
+      for (int i = cleanedBytes.length; i < paddedBytes.length; i++) {
+        paddedBytes[i] = '=';
+      }
+    }
+    try {
+      return Base64.getDecoder().decode(paddedBytes);
+    }
+    catch (IllegalArgumentException e) { return null; }
   }
 
   public static void main(String[] args) throws Exception {

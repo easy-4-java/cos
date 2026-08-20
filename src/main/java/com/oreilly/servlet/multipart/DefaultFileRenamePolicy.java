@@ -17,7 +17,7 @@ import java.io.IOException;
  * upload starts writing the bytes.
  * 
  * @author Jason Hunter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FileRenamePolicy
  * @version 1.1, 2002/11/05, making thread safe with createNewFile()

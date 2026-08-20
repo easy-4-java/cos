@@ -29,7 +29,7 @@ package com.oreilly.servlet;
  * </pre></blockquote>
  *
  * @author <b>Jason Hunter</b>, Copyright &#169; 2000
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 2.0, 2026/08/07, rewritten for Jakarta EE 9-10 and JDK 9+;
  *                           uses {@code Runtime.Version} for JDK detection
