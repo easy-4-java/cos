@@ -9,7 +9,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /** 
@@ -38,7 +39,7 @@ import java.util.Properties;
  * by Rod McChesney of JavaSoft.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see HttpsMessage
  * @version 1.3, 2000/10/24, fixed headers NPE bug
@@ -51,7 +52,7 @@ import java.util.Properties;
 public class HttpMessage {
 
   URL servlet = null;
-  Hashtable<String, String> headers = null;
+  Map<String, String> headers = null;
 
   /**
    * Constructs a new HttpMessage that can be used to communicate with the 
@@ -201,19 +202,16 @@ public class HttpMessage {
    */
   public void setHeader(String name, String value) {
     if (headers == null) {
-      headers = new Hashtable<>();
+      headers = new HashMap<>();
     }
     headers.put(name, value);
   }
 
-  // Send the contents of the headers hashtable to the server
+  // Send the contents of the headers map to the server
   private void sendHeaders(URLConnection con) {
     if (headers != null) {
-      Enumeration<String> enumm = headers.keys();
-      while (enumm.hasMoreElements()) {
-        String name = enumm.nextElement();
-        String value = headers.get(name);
-        con.setRequestProperty(name, value);
+      for (Map.Entry<String, String> entry : headers.entrySet()) {
+        con.setRequestProperty(entry.getKey(), entry.getValue());
       }
     }
   }
@@ -228,7 +226,7 @@ public class HttpMessage {
    */
   public void setCookie(String name, String value) {
     if (headers == null) {
-      headers = new Hashtable<>();
+      headers = new HashMap<>();
     }
     String existingCookies = headers.get("Cookie");
     if (existingCookies == null) {
@@ -256,12 +254,18 @@ public class HttpMessage {
    * Converts a properties list to a URL-encoded query string
    */
   private String toEncodedString(Properties args) {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     Enumeration<?> names = args.propertyNames();
     while (names.hasMoreElements()) {
       String name = (String) names.nextElement();
       String value = args.getProperty(name);
-      buf.append(URLEncoder.encode(name) + "=" + URLEncoder.encode(value));
+      try {
+        buf.append(URLEncoder.encode(name, "UTF-8")).append("=")
+           .append(URLEncoder.encode(value, "UTF-8"));
+      }
+      catch (UnsupportedEncodingException e) {
+        throw new IllegalStateException("UTF-8 not supported", e);
+      }
       if (names.hasMoreElements()) buf.append("&");
     }
     return buf.toString();

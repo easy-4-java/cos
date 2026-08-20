@@ -23,7 +23,7 @@ import java.rmi.server.UnicastRemoteObject;
  * @see com.oreilly.servlet.DaemonHttpServlet
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.0, 98/09/18
  */

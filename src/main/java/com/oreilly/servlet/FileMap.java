@@ -14,7 +14,7 @@ import java.util.Set;
  * to duplicate keys so that every uploaded file is retained.</p>
  *
  * @author L.cm
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see MultipartRequest
  */
