@@ -4,16 +4,18 @@
 
 package com.oreilly.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.WriteListener;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A superclass for HTTP servlets that wish to have their output
@@ -48,9 +50,9 @@ import java.util.*;
  * won't work.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1999
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
- * @see jakarta.servlet.http.HttpServlet
+ * @see javax.servlet.http.HttpServlet
  * @version 0.93, 2004/06/25, added setCharacterEncoding() for servlets 2.4
  * @version 0.92, 2000/03/16, added synchronization blocks to make thread safe
  * @version 0.91, 1999/12/28, made support classes package protected
@@ -59,11 +61,29 @@ import java.util.*;
 
 public abstract class CacheHttpServlet extends HttpServlet {
 
-  CacheHttpServletResponse cacheResponse;
-  long cacheLastMod = -1;
-  String cacheQueryString = null;
-  String cachePathInfo = null;
-  String cacheServletPath = null;
+  static final Logger LOG = Logger.getLogger(CacheHttpServlet.class.getName());
+
+  /** Immutable snapshot of a cached response and the request attributes it
+   *  was generated from, published through a volatile field so cache hits
+   *  never need to take the lock. */
+  private static final class CacheEntry {
+    final CacheHttpServletResponse response;
+    final long lastMod;
+    final String queryString;
+    final String pathInfo;
+    final String servletPath;
+
+    CacheEntry(CacheHttpServletResponse response, long lastMod,
+               String queryString, String pathInfo, String servletPath) {
+      this.response = response;
+      this.lastMod = lastMod;
+      this.queryString = queryString;
+      this.pathInfo = pathInfo;
+      this.servletPath = servletPath;
+    }
+  }
+
+  private volatile CacheEntry cacheEntry;
   Object lock = new Object();
 
   @Override
@@ -94,31 +114,25 @@ public abstract class CacheHttpServlet extends HttpServlet {
       return;
     }
 
-    // Use the existing cache if it's current and valid
-    CacheHttpServletResponse localResponseCopy = null;
-    synchronized (lock) {
-      if (servletLastMod <= cacheLastMod &&
-               cacheResponse.isValid() &&
-               equal(cacheQueryString, req.getQueryString()) &&
-               equal(cachePathInfo, req.getPathInfo()) &&
-               equal(cacheServletPath, req.getServletPath())) {
-        localResponseCopy = cacheResponse;
-      }
-    }
-    if (localResponseCopy != null) {
-      localResponseCopy.writeTo(res);
+    // Use the existing cache if it's current and valid; the volatile read
+    // keeps this path lock-free (the entry is immutable once published)
+    CacheEntry entry = cacheEntry;
+    if (entry != null &&
+        servletLastMod <= entry.lastMod &&
+        entry.response.isValid() &&
+        equal(entry.queryString, req.getQueryString()) &&
+        equal(entry.pathInfo, req.getPathInfo()) &&
+        equal(entry.servletPath, req.getServletPath())) {
+      entry.response.writeTo(res);
       return;
     }
 
     // Otherwise make a new cache to capture the response
-    localResponseCopy = new CacheHttpServletResponse(res);
+    CacheHttpServletResponse localResponseCopy = new CacheHttpServletResponse(res);
     super.service(req, localResponseCopy);
     synchronized (lock) {
-      cacheResponse = localResponseCopy;
-      cacheLastMod = servletLastMod;
-      cacheQueryString = req.getQueryString();
-      cachePathInfo = req.getPathInfo();
-      cacheServletPath = req.getServletPath();
+      cacheEntry = new CacheEntry(localResponseCopy, servletLastMod,
+          req.getQueryString(), req.getPathInfo(), req.getServletPath());
     }
   }
 
@@ -159,7 +173,7 @@ class CacheHttpServletResponse implements HttpServletResponse {
       out = new CacheServletOutputStream(res.getOutputStream());
     }
     catch (IOException e) {
-      System.out.println(
+      CacheHttpServlet.LOG.log(Level.WARNING,
         "Got IOException constructing cached response: " + e.getMessage());
     }
     internalReset();
@@ -245,7 +259,7 @@ class CacheHttpServletResponse implements HttpServletResponse {
       out.getBuffer().writeTo(res.getOutputStream());
     }
     catch (IOException e) {
-      System.out.println(
+      CacheHttpServlet.LOG.log(Level.WARNING,
         "Got IOException writing cached response: " + e.getMessage());
     }
   }
@@ -369,7 +383,6 @@ class CacheHttpServletResponse implements HttpServletResponse {
     status = sc;
   }
 
-  @Override
   public void setStatus(int sc, String sm) {
     delegate.setStatus(sc);
     status = sc;
@@ -411,11 +424,6 @@ class CacheHttpServletResponse implements HttpServletResponse {
     didRedirect = true;
   }
 
-  public void sendRedirect(String location, int sc, boolean clearBuffer) throws IOException {
-    delegate.setStatus(sc);
-    delegate.sendRedirect(location);
-    didRedirect = true;
-  }
 
   @Override
   public String encodeURL(String url) {

@@ -4,10 +4,11 @@
 
 package com.oreilly.servlet;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 /** 
  * A class to simplify cookie retrieval.  It can retrieve cookie values by
@@ -37,14 +38,14 @@ import java.util.Hashtable;
  * @see com.oreilly.servlet.CookieNotFoundException
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2000
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.0, 2000/03/19
  */
 public class CookieParser {
 
   private final HttpServletRequest req;
-  private final Hashtable<String, String> cookieJar = new Hashtable<>();
+  private final Map<String, String> cookieJar = new HashMap<>();
 
   /**
    * Constructs a new CookieParser to handle the cookies of the
@@ -57,7 +58,7 @@ public class CookieParser {
     parseCookies();
   }
 
-  // Load the cookie values into the cookies hashtable
+  // Load the cookie values into the cookies map
   void parseCookies() {
     Cookie[] cookies = req.getCookies();
     if (cookies != null) {

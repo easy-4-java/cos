@@ -4,8 +4,8 @@
 
 package com.oreilly.servlet;
 
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
@@ -62,7 +62,7 @@ import java.io.IOException;
  * @see ServletUtils
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.0, 98/09/18
  */

@@ -4,7 +4,7 @@
 
 package com.oreilly.servlet.multipart;
 
-import jakarta.servlet.ServletInputStream;
+import javax.servlet.ServletInputStream;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.io.IOException;
  * 
  * @author Geoff Soutter
  * @author Jason Hunter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FilePart
  * @see ParamPart

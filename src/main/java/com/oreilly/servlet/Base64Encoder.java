@@ -8,6 +8,7 @@ import lombok.NonNull;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 /** 
  * A class to encode Base64 streams and strings.  
@@ -34,18 +35,20 @@ import java.nio.charset.StandardCharsets;
  */
 public class Base64Encoder extends FilterOutputStream {
 
-  private static final char[] chars = {
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-    'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
-    'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-    'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
-    'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
-    '8', '9', '+', '/'
-  };
+  // Line-wrapping follows the classic implementation: every 57 input bytes
+  // produce one 76-char line followed by a bare LF, including the final
+  // line when it is exactly full. The JDK MIME encoder only inserts its
+  // separator *between* lines, so we use the basic encoder and write the
+  // line feed ourselves.
+  private static final Base64.Encoder ENCODER = Base64.getEncoder();
+  private static final byte[] LF = {'\n'};
 
-  private int charCount;
-  private int carryOver;
+  // 57 input bytes produce one 76-char output line plus the line feed;
+  // flushing each full line as it arrives keeps streaming memory O(1)
+  private static final int LINE_BYTES = 57;
+
+  private final byte[] line = new byte[LINE_BYTES];
+  private int lineCount;
 
   /**
    * Constructs a new Base64 encoder that writes output to the given
@@ -63,44 +66,9 @@ public class Base64Encoder extends FilterOutputStream {
    * @exception IOException if an I/O error occurs
    */
   public void write(int b) throws IOException {
-    // Take 24-bits from three octets, translate into four encoded chars
-    // Break lines at 76 chars
-    // If necessary, pad with 0 bits on the right at the end
-    // Use = signs as padding at the end to ensure encodedLength % 4 == 0
-
-    // Remove the sign bit,
-    // thanks to Christian Schweingruber <chrigu@lorraine.ch>
-    if (b < 0) {
-      b += 256;
-    }
-
-    // First byte use first six bits, save last two bits
-    if (charCount % 3 == 0) {
-      int lookup = b >> 2;
-      carryOver = b & 3;        // last two bits
-      out.write(chars[lookup]);
-    }
-    // Second byte use previous two bits and first four new bits,
-    // save last four bits
-    else if (charCount % 3 == 1) {
-      int lookup = ((carryOver << 4) + (b >> 4)) & 63;
-      carryOver = b & 15;       // last four bits
-      out.write(chars[lookup]);
-    }
-    // Third byte use previous four bits and first two new bits,
-    // then use last six new bits
-    else if (charCount % 3 == 2) {
-      int lookup = ((carryOver << 2) + (b >> 6)) & 63;
-      out.write(chars[lookup]);
-      lookup = b & 63;          // last six bits
-      out.write(chars[lookup]);
-      carryOver = 0;
-    }
-    charCount++;
-
-    // Add newline every 76 output chars (that's 57 input chars)
-    if (charCount % 57 == 0) {
-      out.write('\n');
+    line[lineCount++] = (byte) b;
+    if (lineCount == LINE_BYTES) {
+      flushLine();
     }
   }
 
@@ -114,10 +82,23 @@ public class Base64Encoder extends FilterOutputStream {
    * @exception IOException if an I/O error occurs
    */
   public void write(byte @NonNull [] buf, int off, int len) throws IOException {
-    // This could of course be optimized
-    for (int i = 0; i < len; i++) {
-      write(buf[off + i]);
+    while (len > 0) {
+      int n = Math.min(LINE_BYTES - lineCount, len);
+      System.arraycopy(buf, off, line, lineCount, n);
+      lineCount += n;
+      off += n;
+      len -= n;
+      if (lineCount == LINE_BYTES) {
+        flushLine();
+      }
     }
+  }
+
+  // Encode and emit one full 76-char line plus the line feed
+  private void flushLine() throws IOException {
+    out.write(ENCODER.encode(line));
+    out.write(LF);
+    lineCount = 0;
   }
 
   /**
@@ -127,17 +108,10 @@ public class Base64Encoder extends FilterOutputStream {
    * @exception IOException if an I/O error occurs
    */
   public void close() throws IOException {
-    // Handle leftover bytes
-    if (charCount % 3 == 1) {  // one leftover
-      int lookup = (carryOver << 4) & 63;
-      out.write(chars[lookup]);
-      out.write('=');
-      out.write('=');
-    }
-    else if (charCount % 3 == 2) {  // two leftovers
-      int lookup = (carryOver << 2) & 63;
-      out.write(chars[lookup]);
-      out.write('=');
+    if (lineCount > 0) {
+      byte[] tail = new byte[lineCount];
+      System.arraycopy(line, 0, tail, 0, lineCount);
+      out.write(ENCODER.encode(tail));
     }
     super.close();
   }
@@ -164,17 +138,22 @@ public class Base64Encoder extends FilterOutputStream {
    * @return the encoded form of the unencoded string
    */
   public static String encode(byte[] bytes) {
-    ByteArrayOutputStream out = 
-      new ByteArrayOutputStream((int) (bytes.length * 1.37));
-    Base64Encoder encodedOut = new Base64Encoder(out);
-    
-    try {
-      encodedOut.write(bytes);
-      encodedOut.close();
-
-      return out.toString("ISO-8859-1");
+    // Encode in one JDK call (SIMD-accelerated), then insert a line feed
+    // after every 76-char line, including the final line when it is exactly
+    // full — matching the classic line-wrapping behaviour
+    String encoded = ENCODER.encodeToString(bytes);
+    if (encoded.length() < 76) {
+      return encoded;
     }
-    catch (IOException ignored) { return null; }
+    StringBuilder sb = new StringBuilder(encoded.length() + encoded.length() / 76);
+    int i = 0;
+    for (; i + 76 <= encoded.length(); i += 76) {
+      sb.append(encoded, i, i + 76).append('\n');
+    }
+    if (i < encoded.length()) {
+      sb.append(encoded, i, encoded.length());
+    }
+    return sb.toString();
   }
 
   public static void main(String[] args) throws Exception {

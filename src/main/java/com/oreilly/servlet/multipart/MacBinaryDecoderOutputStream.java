@@ -13,7 +13,7 @@ import java.io.OutputStream;
  * files on the fly; optimized for speed more than readability.
  * 
  * @author Jason Hunter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FilePart
  */

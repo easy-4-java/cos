@@ -4,8 +4,8 @@
 
 package com.oreilly.servlet;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.io.IOException;
  * the class usage.
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 2001
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see MultipartRequest
  * @see MultipartWrapper
@@ -37,14 +37,14 @@ public class MultipartFilter implements Filter {
     dir = config.getInitParameter("uploadDir");
     if (dir == null) {
       File tempdir = (File) config.getServletContext()
-                  .getAttribute("jakarta.servlet.context.tempdir");
+                  .getAttribute("javax.servlet.context.tempdir");
       if (tempdir != null) {
         dir = tempdir.toString();
       }
       else {
         throw new ServletException(
           "MultipartFilter: No upload directory found: set an uploadDir " +
-          "init parameter or ensure the jakarta.servlet.context.tempdir " +
+          "init parameter or ensure the javax.servlet.context.tempdir " +
           "directory is valid");
       }
     }

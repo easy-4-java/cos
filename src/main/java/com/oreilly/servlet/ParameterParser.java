@@ -4,10 +4,11 @@
 
 package com.oreilly.servlet;
 
-import jakarta.servlet.ServletRequest;
+import javax.servlet.ServletRequest;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /** 
  * A class to simplify parameter handling.  It can return parameters of
@@ -54,7 +55,7 @@ import java.util.Vector;
  * @see com.oreilly.servlet.ParameterNotFoundException
  *
  * @author &lt;b&gt;Jason Hunter&lt;/b&gt;, Copyright &#169; 1998, 1999
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.4, 2000/12/14, better checking the selected encoding is valid in 
  *                           setCharacterEncoding() thanks to Dewayne McNair
@@ -385,20 +386,18 @@ public class ParameterParser {
    * @return an array of missing parameters, or null if none are missing
    */
   public String[] getMissingParameters(String[] required) {
-    Vector<String> missing = new Vector<>();
+    List<String> missing = new ArrayList<>();
     for (String s : required) {
       String val = getStringParameter(s, null);
       if (val == null) {
-        missing.addElement(s);
+        missing.add(s);
       }
     }
     if (missing.isEmpty()) {
       return null;
     }
     else {
-      String[] ret = new String[missing.size()];
-      missing.copyInto(ret);
-      return ret;
+      return missing.toArray(new String[0]);
     }
   }
 }

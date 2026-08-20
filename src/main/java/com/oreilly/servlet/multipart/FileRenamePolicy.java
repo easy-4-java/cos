@@ -11,7 +11,7 @@ import java.io.File;
  * useful to handle naming conflicts with an existing file.
  * 
  * @author Jason Hunter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DefaultFileRenamePolicy
  * @version 1.0, 2002/04/30, initial revision, thanks to Changshin Lee for

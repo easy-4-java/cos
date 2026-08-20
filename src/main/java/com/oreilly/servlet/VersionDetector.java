@@ -13,7 +13,7 @@ package com.oreilly.servlet;
  * each major Jakarta Servlet / Servlet release.  It can detect Servlet 3.0+
  * and Jakarta Servlet 4.0+ (Jakarta EE 8-10+).  The result is reported as
  * the major.minor version string of the Jakarta Servlet API actually
- * present at runtime (e.g. {@code "6.0"} for {@code jakarta.servlet-api 6.0.x}).
+ * present at runtime (e.g. {@code "6.0"} for {@code javax.servlet-api 6.0.x}).
  * <p>
  * JDK version detection uses the {@link Runtime.Version} introduced in
  * JDK 9, which is the canonical source of truth; on a JDK 8 or older JVM
@@ -29,7 +29,7 @@ package com.oreilly.servlet;
  * </pre></blockquote>
  *
  * @author <b>Jason Hunter</b>, Copyright &#169; 2000
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 2.0, 2026/08/07, rewritten for Jakarta EE 9-10 and JDK 9+;
  *                           uses {@code Runtime.Version} for JDK detection
@@ -47,7 +47,7 @@ public class VersionDetector {
    * The probe ladder is intentionally coarse: it stops at the highest
    * version whose signature is present, and returns the highest version
    * whose probe succeeded.  If even the Servlet 3.0 baseline
-   * ({@code jakarta.servlet.AsyncContext}) is missing, {@code "2.x"}
+   * ({@code javax.servlet.AsyncContext}) is missing, {@code "2.x"}
    * is returned as a sentinel for "pre-Servlet-3.0" — though in practice
    * this branch is unreachable on any supported Jakarta EE runtime.
    *
@@ -85,8 +85,8 @@ public class VersionDetector {
     // all javax.servlet-api releases) uses javax.*.  We probe a class
     // that exists in both namespaces from Servlet 3.0 onward.
     String pkg;
-    if (classExists("jakarta.servlet.AsyncContext")) {
-      pkg = "jakarta.servlet";
+    if (classExists("javax.servlet.AsyncContext")) {
+      pkg = "javax.servlet";
     } else if (classExists("javax.servlet.AsyncContext")) {
       pkg = "javax.servlet";
     } else {
@@ -106,14 +106,14 @@ public class VersionDetector {
     // distinguishes 5.0 from 4.0 on its own.  When the runtime is on
     // the jakarta.* namespace, the verdict "4.0" actually means
     // "Jakarta Servlet 5.0 or newer (pre-6.0)" — bump it to "5.0".
-    if ("jakarta.servlet".equals(pkg) && "4.0".equals(ver)) {
+    if ("javax.servlet".equals(pkg) && "4.0".equals(ver)) {
       ver = "5.0";
     }
 
     // Jakarta Servlet 6.0 / Jakarta EE 10: ServletConnection lives in
-    // the top-level jakarta.servlet package (no javax equivalent —
+    // the top-level javax.servlet package (no javax equivalent —
     // ServletConnection was introduced after the namespace rename).
-    if ("jakarta.servlet".equals(pkg) && classExists("jakarta.servlet.ServletConnection")) {
+    if ("javax.servlet".equals(pkg) && classExists("javax.servlet.ServletConnection")) {
       ver = "6.0";
     }
 

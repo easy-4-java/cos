@@ -5,8 +5,8 @@
 package com.oreilly.servlet;
 
 import com.oreilly.servlet.multipart.*;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +45,7 @@ import java.util.Vector;
  * 
  * @author Jason Hunter
  * @author Geoff Soutter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.12, 2004/04/11, added null check for Opera malformed bug<br>
  * @version 1.11, 2002/11/01, combine query string params in param list<br>

@@ -4,8 +4,8 @@
  
 package com.oreilly.servlet.multipart;
 
-import jakarta.servlet.ReadListener;
-import jakarta.servlet.ServletInputStream;
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ import java.io.IOException;
  * Apache JServ is known to suffer from this bug.
  * 
  * @author Geoff Soutter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see LimitedServletInputStream
  * @version 1.1, 2001/05/21, removed block of commented out code

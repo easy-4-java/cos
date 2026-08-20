@@ -4,12 +4,12 @@
 
 package com.oreilly.servlet.multipart;
 
-import jakarta.servlet.ServletInputStream;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /** 
  * A utility class to handle <code>multipart/form-data</code> requests,
@@ -47,7 +47,7 @@ import java.util.Vector;
  * 
  * @author Jason Hunter
  * @author Geoff Soutter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @version 1.13, 2004/09/01, added workaround if content-length is -1
  * @version 1.12, 2004/05/17, added trim on disposition
@@ -250,7 +250,7 @@ public class MultipartParser {
     // Content-Disposition: form-data; name="field1"; filename="file1.txt"
     // Content-Type: type/subtype
     // Content-Transfer-Encoding: binary
-    Vector<String> headers = new Vector<>();
+    List<String> headers = new ArrayList<>();
 
     String line = readLine();
     if (line == null) {
@@ -282,7 +282,7 @@ public class MultipartParser {
         }
       }
       // Add the line to the header list
-      headers.addElement(line);
+      headers.add(line);
       line = nextLine;
     }
 
@@ -296,9 +296,7 @@ public class MultipartParser {
     String origname = null;
     String contentType = "text/plain";  // rfc1867 says this is the default
 
-    Enumeration<String> enu = headers.elements();
-    while (enu.hasMoreElements()) {
-      String headerline = enu.nextElement();
+    for (String headerline : headers) {
       if (headerline.toLowerCase().startsWith("content-disposition:")) {
         // Parse the content-disposition line
         String[] dispInfo = extractDispositionInfo(headerline);

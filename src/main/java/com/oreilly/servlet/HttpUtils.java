@@ -1,6 +1,6 @@
 package com.oreilly.servlet;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import java.util.Hashtable;
 import java.util.StringTokenizer;
@@ -8,9 +8,9 @@ import java.util.StringTokenizer;
 /**
  * Utility class for common HTTP operations such as parsing query strings
  * and reconstructing request URLs. This is a replacement for the deprecated
- * {@code jakarta.servlet.http.HttpUtils} class.
+ * {@code javax.servlet.http.HttpUtils} class.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see MultipartRequest
  */

@@ -4,7 +4,7 @@
 
 package com.oreilly.servlet.multipart;
 
-import jakarta.servlet.ServletInputStream;
+import javax.servlet.ServletInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
  * 
  * @author Geoff Soutter
  * @author Jason Hunter
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see Part
  * @see FilePart
