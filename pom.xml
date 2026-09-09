@@ -47,7 +47,6 @@
         <maven.version>4.0.0-rc-5</maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Dependency versions -->
-        <additionalparam>-Xdoclint:none</additionalparam>
         <jakarta-servlet.version>6.1.0</jakarta-servlet.version>
         <jakarta-validation.version>3.1.1</jakarta-validation.version>
         <junit.version>4.13.2</junit.version>
@@ -450,7 +449,6 @@
                 <jdk>[1.8,)</jdk>
             </activation>
             <properties>
-                <additionalparam>-Xdoclint:none</additionalparam>
             </properties>
         </profile>
         <!-- 发布到 Maven Central Portal：mvn -Prelease deploy（GPG 签名 + 源码 + Javadoc + Central 发布插件） -->
